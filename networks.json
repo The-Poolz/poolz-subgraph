@@ -1,0 +1,14 @@
+{
+  "bsc": {
+    "ThePoolz": {
+      "address": "0xCc8f6A82Ff034C15dFDAcBcab29F7Ea28C616EF7",
+      "startBlock": 9088178
+    },
+    "DelayVault": {
+      "address": "0x5eb57B1210338b13E3D5572d5e1670285Aa71702"
+    },
+    "DelayVaultProvider": {
+      "address": "0xeb88Ff7799E0e7b187D98232336722ec9936B86D"
+    }
+  }
+}

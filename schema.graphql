@@ -1,0 +1,241 @@
+type FinishPool @entity(immutable: true) {
+  id: Bytes!
+  internal_id: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewInvestorEvent @entity(immutable: true) {
+  id: Bytes!
+  Investor_ID: BigInt! # uint256
+  Investor_Address: Bytes! # address
+  LockedDeal_ID: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewPool @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  internal_id: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Paused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PoolUpdate @entity(immutable: true) {
+  id: Bytes!
+  internal_id: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferIn @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  From: Bytes! # address
+  Token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferInETH @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  From: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferOut @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  To: Bytes! # address
+  Token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferOutETH @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  To: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Unpaused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Invested @entity(immutable: true) {
+  id: Bytes!            # tx hash (same for every child event)
+  internal_id: BigInt!   # pool’s ID – filled by PoolUpdate / FinishPool
+  investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
+  timestamp: BigInt!
+  IsErc20: Boolean!    # if this pool main coin is 0x0 or there is some Erc20 as input
+  amountIn: BigInt    #this can be from transferin or transferinETH
+}
+
+type GovernorUpdated @entity(immutable: true) {
+  id: Bytes!
+  oldGovernor: Bytes! # address
+  newGovernor: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultPaused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RedeemedTokens @entity(immutable: true) {
+  id: Bytes!
+  Token: Bytes! # address
+  Amount: BigInt! # uint256
+  RemaningAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenRedemptionApproval @entity(immutable: true) {
+  id: Bytes!
+  Token: Bytes! # address
+  User: Bytes! # address
+  Status: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenStatusFilter @entity(immutable: true) {
+  id: Bytes!
+  Token: Bytes! # address
+  Status: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultTransferIn @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  From: Bytes! # address
+  Token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultTransferOut @entity(immutable: true) {
+  id: Bytes!
+  Amount: BigInt! # uint256
+  To: Bytes! # address
+  Token: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultUnpaused @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdatedMaxDelay @entity(immutable: true) {
+  id: Bytes!
+  OldDelay: BigInt! # uint256
+  NewDelay: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UpdatedMinDelays @entity(immutable: true) {
+  id: Bytes!
+  Token: Bytes! # address
+  Amounts: [BigInt!]! # uint256[]
+  StartDelays: [BigInt!]! # uint256[]
+  CliffDelays: [BigInt!]! # uint256[]
+  FinishDelays: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VaultValueChanged @entity(immutable: true) {
+  id: Bytes!
+  Token: Bytes! # address
+  Owner: Bytes! # address
+  Amount: BigInt! # uint256
+  StartDelay: BigInt! # uint256
+  CliffDelay: BigInt! # uint256
+  FinishDelay: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type UpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelayVaultProviderVaultValueChanged @entity(immutable: true) {
+  id: Bytes!
+  token: Bytes! # address
+  owner: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
