@@ -174,28 +174,40 @@ export function handleFinishPool(event: FinishPoolEvent): void {
 }
 
 function AddInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestamp: BigInt): void {
+    let amountIn: BigInt | null = null
+    let amountOut: BigInt | null = null
+
     const transferInEth = loadTransferInETH(hash, logIndex)
-
-    let amount: BigInt
-
-    if (transferInEth) {
-        // found an ETH event
-        amount = transferInEth.Amount
-    } else {
-        // fall back to ERC-20 event
-        const transferIn = loadTransferIn(hash, logIndex)
-        if (transferIn == null) {
-            return // or handle however you like
+    if (transferInEth != null) {
+        amountIn = transferInEth.Amount
+        const transferOutEth = loadTransferOutETH(hash, logIndex)
+        if (transferOutEth != null) {
+            amountOut = transferOutEth.Amount
         }
-        amount = transferIn.Amount
+    } else {
+        const transferIn = loadTransferIn(hash, logIndex)
+        if (transferIn != null) {
+            amountIn = transferIn.Amount
+        }
+        const transferOut = loadTransferOut(hash, logIndex)
+        if (transferOut != null) {
+            amountOut = transferOut.Amount
+        }
     }
+
+    // Skip saving if both are null
+    let skip = true
+    if (amountIn !== null) skip = false
+    if (amountOut !== null) skip = false
+    if (skip) return
 
     let InvestedEntity = new Invested(hash.concatI32(logIndex))
     InvestedEntity.investor = from
     InvestedEntity.internal_id = id
     InvestedEntity.IsErc20 = transferInEth == null
     InvestedEntity.timestamp = timestamp
-    InvestedEntity.amountIn = amount
+    InvestedEntity.amountIn = amountIn
+    InvestedEntity.amountOut = amountOut
     InvestedEntity.save()
 }
 
@@ -212,6 +224,24 @@ function loadTransferIn(hash: Bytes, logIndex: i32): TransferIn | null {
     const OFFSETS: i32[] = [-9, -6, -5]
     for (let i = 0; i < OFFSETS.length; i++) {
         const ent = TransferIn.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
+        if (ent != null) return ent
+    }
+    return null
+}
+
+function loadTransferOutETH(hash: Bytes, logIndex: i32): TransferOutETH | null {
+    const OFFSETS: i32[] = [-8, -7, -6]
+    for (let i = 0; i < OFFSETS.length; i++) {
+        const ent = TransferOutETH.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
+        if (ent != null) return ent
+    }
+    return null
+}
+
+function loadTransferOut(hash: Bytes, logIndex: i32): TransferOut | null {
+    const OFFSETS: i32[] = [-8, -7, -6]
+    for (let i = 0; i < OFFSETS.length; i++) {
+        const ent = TransferOut.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
         if (ent != null) return ent
     }
     return null
