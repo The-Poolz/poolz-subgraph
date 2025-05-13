@@ -221,10 +221,11 @@ function handleInvested(
 
 function addTotalInvestedAmount(id: BigInt, from: Bytes, amountIn: BigInt, amountOut: BigInt): void {
     let uniqueId = id.toString().concat("-").concat(from.toHex()) // composite ID: poolId-investor
-    let investedTotals = InvestedTotals.load(uniqueId)
+    let uniqueIdBytes = Bytes.fromUTF8(uniqueId);
+    let investedTotals = InvestedTotals.load(uniqueIdBytes)
 
     if (investedTotals === null) {
-        investedTotals = new InvestedTotals(uniqueId)
+        investedTotals = new InvestedTotals(uniqueIdBytes)
         investedTotals.investor = from
         investedTotals.internal_id = id
     }
