@@ -25,6 +25,7 @@ import {
     TransferOutETH,
     Unpaused,
     Invested,
+    InvestedTotals,
 } from "../generated/schema"
 import { loadTransferIn, loadTransferInETH, loadTransferOut, loadTransferOutETH } from "./utils/loadInBlock"
 
@@ -175,43 +176,57 @@ export function handleFinishPool(event: FinishPoolEvent): void {
 }
 
 function addInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestamp: BigInt): void {
-    // Try ETH transfer
-    const ethTransfer = loadTransferInETH(hash, logIndex)
-    if (ethTransfer) {
-        const ethOut = loadTransferOutETH(hash, logIndex)
-        const amountOut =
-            ethOut !== null && ethOut.get("Amount") !== null ? ethOut.get("Amount")!.toBigInt() : BigInt.fromI32(0)
-
-        createInvestedEntity(hash, logIndex, id, from, timestamp, false, ethTransfer.Amount, amountOut)
+    const eth = loadTransferInETH(hash, logIndex)
+    if (eth) {
+        const transferOutEth = loadTransferOutETH(hash, logIndex)
+        let amountOut: BigInt = BigInt.fromI32(0)
+        if (transferOutEth !== null) {
+            let maybeAmount = transferOutEth.get("Amount")
+            if (maybeAmount !== null) {
+                amountOut = maybeAmount.toBigInt()
+            }
+        }
+        handleInvested(hash, logIndex, id, from, timestamp, false, eth.Amount, amountOut)
         return
     }
 
-    // Try ERC20 transfer
-    const erc20Transfer = loadTransferIn(hash, logIndex)
-    if (erc20Transfer) {
-        const erc20Out = loadTransferOut(hash, logIndex)
-        const amountOut = erc20Out ? erc20Out.Amount : BigInt.fromI32(0)
-
-        createInvestedEntity(hash, logIndex, id, from, timestamp, true, erc20Transfer.Amount, amountOut)
+    const erc20 = loadTransferIn(hash, logIndex)
+    if (erc20) {
+        const transferOut = loadTransferOut(hash, logIndex)
+        let amountOut: BigInt = transferOut ? transferOut.Amount : BigInt.fromI32(0)
+        handleInvested(hash, logIndex, id, from, timestamp, true, erc20.Amount, amountOut)
     }
 }
 
-function createInvestedEntity(
+function handleInvested(
     hash: Bytes,
     logIndex: i32,
     id: BigInt,
     from: Bytes,
     timestamp: BigInt,
-    isErc20: boolean,
+    IsErc20: boolean,
     amountIn: BigInt,
     amountOut: BigInt
 ): void {
-    const entity = new Invested(hash.concatI32(logIndex))
-    entity.investor = from
-    entity.internal_id = id
-    entity.IsErc20 = isErc20
-    entity.timestamp = timestamp
-    entity.amountIn = amountIn
-    entity.amountOut = amountOut
-    entity.save()
+    let InvestedEntity = new Invested(hash.concatI32(logIndex))
+    InvestedEntity.investor = from
+    InvestedEntity.internal_id = id
+    InvestedEntity.IsErc20 = IsErc20
+    InvestedEntity.timestamp = timestamp
+    InvestedEntity.amountIn = amountIn
+    InvestedEntity.amountOut = amountOut
+    InvestedEntity.save()
+    addTotalInvestedAmount(id, from, amountIn, amountOut)
+}
+
+function addTotalInvestedAmount(id: BigInt, from: Bytes, amountIn: BigInt, amountOut: BigInt): void {
+    let investedTotals = InvestedTotals.load(id.toString())
+    if (investedTotals === null) {
+        investedTotals = new InvestedTotals(id.toString())
+    }
+    investedTotals.investor = from
+    investedTotals.internal_id = id
+    investedTotals.totalAmountIn = investedTotals.totalAmountIn.plus(amountIn)
+    investedTotals.totalAmountOut = investedTotals.totalAmountIn.plus(amountOut)
+    investedTotals.save()
 }

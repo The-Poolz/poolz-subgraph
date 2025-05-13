@@ -106,6 +106,14 @@ type Invested @entity(immutable: true) {
   amountOut: BigInt   # this is the amount of tokens that the investor will receive
 }
 
+type InvestedTotals @entity(immutable: false) {
+  id: ID!               # can be a constant like "global" or "totals"
+  internal_id: BigInt!   # pool’s ID – filled by PoolUpdate / FinishPool
+  investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
+  totalAmountIn: BigInt!
+  totalAmountOut: BigInt!
+}
+
 type GovernorUpdated @entity(immutable: true) {
   id: Bytes!
   oldGovernor: Bytes! # address
