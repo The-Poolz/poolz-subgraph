@@ -220,13 +220,17 @@ function handleInvested(
 }
 
 function addTotalInvestedAmount(id: BigInt, from: Bytes, amountIn: BigInt, amountOut: BigInt): void {
-    let investedTotals = InvestedTotals.load(id.toString())
+    let uniqueId = id.toString().concat("-").concat(from.toHex()) // composite ID: poolId-investor
+    let investedTotals = InvestedTotals.load(uniqueId)
+
     if (investedTotals === null) {
-        investedTotals = new InvestedTotals(id.toString())
+        investedTotals = new InvestedTotals(uniqueId)
+        investedTotals.investor = from
+        investedTotals.internal_id = id
     }
-    investedTotals.investor = from
-    investedTotals.internal_id = id
+
     investedTotals.totalAmountIn = investedTotals.totalAmountIn.plus(amountIn)
-    investedTotals.totalAmountOut = investedTotals.totalAmountIn.plus(amountOut)
+    investedTotals.totalAmountOut = investedTotals.totalAmountOut.plus(amountOut)
+
     investedTotals.save()
 }
