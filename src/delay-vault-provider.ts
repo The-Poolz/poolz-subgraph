@@ -2,7 +2,7 @@ import {
     UpdateParams as UpdateParamsEvent,
     VaultValueChanged as VaultValueChangedEvent,
 } from "../generated/DelayVaultProvider/DelayVaultProvider"
-import { UpdateParams, VaultValueChanged } from "../generated/schema"
+import { UpdateParams, DelayVaultProviderVaultValueChanged } from "../generated/schema"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
     let entity = new UpdateParams(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -17,10 +17,10 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 }
 
 export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
-    let entity = new VaultValueChanged(event.transaction.hash.concatI32(event.logIndex.toI32()))
-    entity.Token = event.params.token
-    entity.Owner = event.params.owner
-    entity.Amount = event.params.amount
+    let entity = new DelayVaultProviderVaultValueChanged(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    entity.token = event.params.token
+    entity.owner = event.params.owner
+    entity.amount = event.params.amount
 
     entity.blockNumber = event.block.number
     entity.blockTimestamp = event.block.timestamp
