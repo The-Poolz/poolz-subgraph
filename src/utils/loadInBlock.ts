@@ -16,7 +16,7 @@ export function loadTransferOut(hash: Bytes, logIndex: i32): TransferOut | null 
 }
 
 export function loadTransferInETH(hash: Bytes, logIndex: i32): TransferInETH | null {
-    const OFFSETS: i32[] = [-8, -6]
+    const OFFSETS: i32[] = [8, 6]
     for (let i = 0; i < OFFSETS.length; i++) {
         const ent = TransferInETH.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
         if (ent != null) return ent
