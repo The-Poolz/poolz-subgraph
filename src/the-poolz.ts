@@ -24,8 +24,8 @@ import {
     TransferOut,
     TransferOutETH,
     Unpaused,
-    Invested,
     InvestedTotals,
+    Invested,
 } from "../generated/schema"
 import { loadTransferIn, loadTransferInETH, loadTransferOut, loadTransferOutETH } from "./utils/loadInBlock"
 
@@ -177,23 +177,24 @@ export function handleFinishPool(event: FinishPoolEvent): void {
 
 function addInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestamp: BigInt): void {
     const eth = loadTransferInETH(hash, logIndex)
-    if (eth) {
+    if (eth !== null) {
         const transferOutEth = loadTransferOutETH(hash, logIndex)
-        let amountOut: BigInt = BigInt.fromI32(0)
+        let amountOut = BigInt.zero()
         if (transferOutEth !== null) {
-            let maybeAmount = transferOutEth.get("Amount")
-            if (maybeAmount !== null) {
-                amountOut = maybeAmount.toBigInt()
-            }
+            let value = transferOutEth.get("Amount")
+            amountOut = value !== null ? value.toBigInt() : BigInt.fromI32(0)
         }
         handleInvested(hash, logIndex, id, from, timestamp, false, eth.Amount, amountOut)
         return
     }
 
     const erc20 = loadTransferIn(hash, logIndex)
-    if (erc20) {
+    if (erc20 !== null) {
         const transferOut = loadTransferOut(hash, logIndex)
-        let amountOut: BigInt = transferOut ? transferOut.Amount : BigInt.fromI32(0)
+        let amountOut = BigInt.zero()
+        if (transferOut !== null) {
+            amountOut = transferOut.Amount
+        }
         handleInvested(hash, logIndex, id, from, timestamp, true, erc20.Amount, amountOut)
     }
 }
@@ -208,32 +209,32 @@ function handleInvested(
     amountIn: BigInt,
     amountOut: BigInt
 ): void {
-    let InvestedEntity = new Invested(hash.concatI32(logIndex))
-    InvestedEntity.investor = from
-    InvestedEntity.internal_id = id
-    InvestedEntity.IsErc20 = IsErc20
-    InvestedEntity.timestamp = timestamp
-    InvestedEntity.amountIn = amountIn
-    InvestedEntity.amountOut = amountOut
-    InvestedEntity.save()
+    let entity = new Invested(hash.toHex() + "-" + logIndex.toString())
+    entity.investor = from
+    entity.internal_id = id
+    entity.IsErc20 = IsErc20
+    entity.timestamp = timestamp
+    entity.amountIn = amountIn
+    entity.amountOut = amountOut
+    entity.save()
+
     addTotalInvestedAmount(id, from, amountIn, amountOut)
 }
 
 function addTotalInvestedAmount(id: BigInt, from: Bytes, amountIn: BigInt, amountOut: BigInt): void {
-    let uniqueId = id.toString().concat("-").concat(from.toHex()) // composite ID: poolId-investor
+    let uniqueId = id.toString() + "-" + from.toHex()
     let uniqueIdBytes = Bytes.fromUTF8(uniqueId)
-    let investedTotals = InvestedTotals.load(uniqueIdBytes)
+    let totals = InvestedTotals.load(uniqueIdBytes.toHex())
 
-    if (investedTotals === null) {
-        investedTotals = new InvestedTotals(uniqueIdBytes)
-        investedTotals.investor = from
-        investedTotals.internal_id = id
-        investedTotals.totalAmountIn = BigInt.fromI32(0)
-        investedTotals.totalAmountOut = BigInt.fromI32(0)
+    if (!totals) {
+        totals = new InvestedTotals(uniqueIdBytes.toHex())
+        totals.investor = from
+        totals.internal_id = id
+        totals.totalAmountIn = BigInt.zero()
+        totals.totalAmountOut = BigInt.zero()
     }
 
-    investedTotals.totalAmountIn = investedTotals.totalAmountIn.plus(amountIn)
-    investedTotals.totalAmountOut = investedTotals.totalAmountOut.plus(amountOut)
-
-    investedTotals.save()
+    totals.totalAmountIn = totals.totalAmountIn.plus(amountIn)
+    totals.totalAmountOut = totals.totalAmountOut.plus(amountOut)
+    totals.save()
 }
