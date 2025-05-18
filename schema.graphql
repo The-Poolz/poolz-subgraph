@@ -97,19 +97,19 @@ type Unpaused @entity(immutable: true) {
 }
 
 type Invested @entity(immutable: true) {
-  id: ID!
+  id: Bytes!            # tx hash (same for every child event)
   internal_id: BigInt!   # pool’s ID – filled by PoolUpdate / FinishPool
   investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
   timestamp: BigInt!
   IsErc20: Boolean!    # if this pool main coin is 0x0 or there is some Erc20 as input
-  amountIn: BigInt    #this can be from transferin or transferinETH
-  amountOut: BigInt   # this is the amount of tokens that the investor will receive
+  amountIn: BigInt    # this can be from transferin or transferinETH
+  amountOut: BigInt   # this can be from transferout or transferoutETH
 }
 
 type InvestedTotals @entity(immutable: false) {
-  id: ID!
-  investor: Bytes!
-  internal_id: BigInt!
+  id: Bytes!               # can be a constant like "global" or "totals"
+  internal_id: BigInt!   # pool’s ID – filled by PoolUpdate / FinishPool
+  investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
   totalAmountIn: BigInt!
   totalAmountOut: BigInt!
 }
