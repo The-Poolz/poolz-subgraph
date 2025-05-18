@@ -21,6 +21,8 @@ dataSources:
         - NewPool
         - OwnershipTransferred
         - Paused
+        - Invested
+        - InvestedTotals
         - PoolUpdate
         - TransferIn
         - TransferInETH

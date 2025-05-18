@@ -25,7 +25,16 @@ import {
     TransferOutETH,
     Unpaused,
     Invested,
+    InvestedTotals,
 } from "../generated/schema"
+import {
+    loadTransferIn,
+    loadTransferIn2,
+    loadTransferInETH,
+    loadTransferOut,
+    loadTransferOutETH,
+    loadTransferOutETH2,
+} from "./utils/loadInBlock"
 
 export function handleNewInvestorEvent(event: NewInvestorEventEvent): void {
     let entity = new NewInvestorEvent(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -146,7 +155,7 @@ export function handlePoolUpdate(event: PoolUpdateEvent): void {
 
     entity.save()
 
-    AddInvest(
+    addInvest(
         event.transaction.hash,
         event.logIndex.toI32(),
         event.params.id,
@@ -164,7 +173,7 @@ export function handleFinishPool(event: FinishPoolEvent): void {
     entity.transactionHash = event.transaction.hash
 
     entity.save()
-    AddInvest(
+    addInvest(
         event.transaction.hash,
         event.logIndex.toI32(),
         event.params.id,
@@ -173,46 +182,64 @@ export function handleFinishPool(event: FinishPoolEvent): void {
     )
 }
 
-function AddInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestamp: BigInt): void {
+function addInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestamp: BigInt): void {
     const transferInEth = loadTransferInETH(hash, logIndex)
+    let amountIn: BigInt = BigInt.fromI32(0)
+    let amountOut: BigInt = BigInt.fromI32(0)
 
-    let amount: BigInt
-
-    if (transferInEth) {
-        // found an ETH event
-        amount = transferInEth.Amount
-    } else {
-        // fall back to ERC-20 event
-        const transferIn = loadTransferIn(hash, logIndex)
-        if (transferIn == null) {
-            return // or handle however you like
+    if (transferInEth != null) {
+        amountIn = transferInEth.Amount
+        const transferOutEth = loadTransferOutETH(hash, logIndex)
+        if (transferOutEth != null) {
+            amountOut = transferOutEth.Amount
+        } else {
+            const transferOutEth2 = loadTransferOutETH2(hash, logIndex)
+            if (transferOutEth2 != null) {
+                amountOut = transferOutEth2.Amount
+            }
         }
-        amount = transferIn.Amount
+    } else {
+        const transferIn = loadTransferIn(hash, logIndex)
+        if (transferIn != null) {
+            amountIn = transferIn.Amount
+        }
+        let transferOut = loadTransferOut(hash, logIndex)
+        if (transferOut != null) {
+            amountOut = transferOut.Amount
+        } else {
+            const transferIn2 = loadTransferIn2(hash, logIndex)
+            if (transferIn2 != null) {
+                amountOut = transferIn2.Amount
+            }
+        }
     }
 
-    let InvestedEntity = new Invested(hash.concatI32(logIndex))
-    InvestedEntity.investor = from
-    InvestedEntity.internal_id = id
-    InvestedEntity.IsErc20 = transferInEth == null
-    InvestedEntity.timestamp = timestamp
-    InvestedEntity.amountIn = amount
-    InvestedEntity.save()
+    let invested = new Invested(hash.concatI32(logIndex))
+    invested.investor = from
+    invested.internal_id = id
+    invested.IsErc20 = transferInEth == null
+    invested.timestamp = timestamp
+    invested.amountIn = amountIn
+    invested.amountOut = amountOut
+    invested.save()
+    addTotalInvestedAmount(id, from, amountIn, amountOut)
 }
 
-function loadTransferInETH(hash: Bytes, logIndex: i32): TransferInETH | null {
-    const OFFSETS: i32[] = [-8, -7, -5]
-    for (let i = 0; i < OFFSETS.length; i++) {
-        const ent = TransferInETH.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
-        if (ent != null) return ent
-    }
-    return null
-}
+function addTotalInvestedAmount(id: BigInt, from: Bytes, amountIn: BigInt, amountOut: BigInt): void {
+    let uniqueId = id.toString().concat("-").concat(from.toHex()) // composite ID: poolId-investor
+    let uniqueIdBytes = Bytes.fromUTF8(uniqueId)
+    let investedTotals = InvestedTotals.load(uniqueIdBytes)
 
-function loadTransferIn(hash: Bytes, logIndex: i32): TransferIn | null {
-    const OFFSETS: i32[] = [-9, -6, -5]
-    for (let i = 0; i < OFFSETS.length; i++) {
-        const ent = TransferIn.loadInBlock(hash.concatI32(logIndex - OFFSETS[i]))
-        if (ent != null) return ent
+    if (investedTotals === null) {
+        investedTotals = new InvestedTotals(uniqueIdBytes)
+        investedTotals.investor = from
+        investedTotals.internal_id = id
+        investedTotals.totalAmountIn = BigInt.fromI32(0)
+        investedTotals.totalAmountOut = BigInt.fromI32(0)
     }
-    return null
+
+    investedTotals.totalAmountIn = investedTotals.totalAmountIn.plus(amountIn)
+    investedTotals.totalAmountOut = investedTotals.totalAmountOut.plus(amountOut)
+
+    investedTotals.save()
 }

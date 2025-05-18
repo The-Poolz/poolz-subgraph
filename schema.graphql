@@ -102,7 +102,16 @@ type Invested @entity(immutable: true) {
   investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
   timestamp: BigInt!
   IsErc20: Boolean!    # if this pool main coin is 0x0 or there is some Erc20 as input
-  amountIn: BigInt    #this can be from transferin or transferinETH
+  amountIn: BigInt    # this can be from transferin or transferinETH
+  amountOut: BigInt   # this can be from transferout or transferoutETH
+}
+
+type InvestedTotals @entity(immutable: false) {
+  id: Bytes!               # can be a constant like "global" or "totals"
+  internal_id: BigInt!   # pool’s ID – filled by PoolUpdate / FinishPool
+  investor: Bytes!      # first address that deposited – filled by TransferIn/ETH
+  totalAmountIn: BigInt!
+  totalAmountOut: BigInt!
 }
 
 type GovernorUpdated @entity(immutable: true) {
