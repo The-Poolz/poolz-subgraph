@@ -1,5 +1,5 @@
-import { Bytes, Entity } from "@graphprotocol/graph-ts"
-import { TransferIn, TransferInETH, TransferOut } from "../../generated/schema"
+import { Bytes } from "@graphprotocol/graph-ts"
+import { TransferIn, TransferInETH, TransferOut, NewPoolCreated } from "../../generated/schema"
 
 export function loadTransferInETH(hash: Bytes, logIndex: i32): TransferInETH | null {
     const OFFSETS: i32[] = [5, 8]
@@ -31,7 +31,7 @@ export function loadTransferOutETH(hash: Bytes, logIndex: i32): TransferOut | nu
 }
 
 // with LDV1
-export function loadTransferOutETH2(hash: Bytes, logIndex: i32): TransferIn | null {
-    const OFFSET = 4
-    return TransferIn.loadInBlock(hash.concatI32(logIndex - OFFSET))
+export function loadTransferOutETH2(hash: Bytes, logIndex: i32): NewPoolCreated | null {
+    const OFFSET = 3
+    return NewPoolCreated.loadInBlock(hash.concatI32(logIndex - OFFSET))
 }
