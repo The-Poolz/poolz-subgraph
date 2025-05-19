@@ -145,13 +145,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - NewPoolCreated
-        - LockedDealOwnershipTransferred
-        - PoolApproval
-        - PoolOwnershipTransfered
-        - LockedDealTransferIn
-        - LockedDealTransferInETH
-        - LockedDealTransferOut
-        - LockedDealTransferOutETH
       abis:
         - name: LockedDeal
           file: ./abis/LockedDeal.json

@@ -7,8 +7,6 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { BigInt, Address } from "@graphprotocol/graph-ts"
-import { NewPoolCreated } from "../generated/schema"
-import { NewPoolCreated as NewPoolCreatedEvent } from "../generated/LockedDeal/LockedDeal"
 import { handleNewPoolCreated } from "../src/locked-deal"
 import { createNewPoolCreatedEvent } from "./locked-deal-utils"
 
