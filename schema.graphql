@@ -248,3 +248,15 @@ type DelayVaultProviderVaultValueChanged @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type NewPoolCreated @entity(immutable: true) {
+  id: Bytes!
+  PoolId: BigInt! # uint256
+  Token: Bytes! # address
+  FinishTime: BigInt! # uint64
+  StartAmount: BigInt! # uint256
+  Owner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

@@ -195,7 +195,7 @@ function addInvest(hash: Bytes, logIndex: i32, id: BigInt, from: Bytes, timestam
         } else {
             const transferOutEth2 = loadTransferOutETH2(hash, logIndex)
             if (transferOutEth2 != null) {
-                amountOut = transferOutEth2.Amount
+                amountOut = transferOutEth2.StartAmount
             }
         }
     } else {

@@ -9,6 +9,9 @@
     },
     "DelayVaultProvider": {
       "address": "0xeb88Ff7799E0e7b187D98232336722ec9936B86D"
+    },
+    "LockedDeal": {
+      "address": "0xfd53c216adf6b5ae7cfb86aa5724ce41a1d67092"
     }
   }
 }
