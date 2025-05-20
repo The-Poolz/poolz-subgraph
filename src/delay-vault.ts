@@ -26,6 +26,7 @@ import {
     UpdatedMinDelays,
     VaultValueChanged,
 } from "../generated/schema"
+import { updatePoolxLockedBalance } from "./extendedEntities/lockedPoolxBalance"
 
 export function handleGovernorUpdated(event: GovernorUpdatedEvent): void {
     let entity = new GovernorUpdated(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -178,4 +179,5 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
     entity.transactionHash = event.transaction.hash
 
     entity.save()
+    updatePoolxLockedBalance(event.params.Owner, event.params.Amount, event.block.timestamp)
 }
