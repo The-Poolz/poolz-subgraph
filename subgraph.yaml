@@ -5,58 +5,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: ThePoolz
-    network: bsc
-    source:
-      address: "0xCc8f6A82Ff034C15dFDAcBcab29F7Ea28C616EF7"
-      abi: ThePoolz
-      startBlock: 9088178
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.9
-      language: wasm/assemblyscript
-      entities:
-        - FinishPool
-        - NewInvestorEvent
-        - NewPool
-        - OwnershipTransferred
-        - Paused
-        - Invested
-        - InvestedTotals
-        - PoolUpdate
-        - TransferIn
-        - TransferInETH
-        - TransferOut
-        - TransferOutETH
-        - Unpaused
-      abis:
-        - name: ThePoolz
-          file: ./abis/ThePoolz.json
-      eventHandlers:
-        - event: FinishPool(uint256)
-          handler: handleFinishPool
-        - event: NewInvestorEvent(uint256,address,uint256)
-          handler: handleNewInvestorEvent
-        - event: NewPool(address,uint256)
-          handler: handleNewPool
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: PoolUpdate(uint256)
-          handler: handlePoolUpdate
-        - event: TransferIn(uint256,address,address)
-          handler: handleTransferIn
-        - event: TransferInETH(uint256,address)
-          handler: handleTransferInETH
-        - event: TransferOut(uint256,address,address)
-          handler: handleTransferOut
-        - event: TransferOutETH(uint256,address)
-          handler: handleTransferOutETH
-        - event: Unpaused(address)
-          handler: handleUnpaused
-      file: ./src/the-poolz.ts
-  - kind: ethereum
     name: DelayVault
     network: bsc
     source:
@@ -133,22 +81,200 @@ dataSources:
           handler: handleVaultValueChanged
       file: ./src/delay-vault-provider.ts
   - kind: ethereum
-    name: LockedDeal
+    name: VaultManager
     network: bsc
     source:
-      address: "0xfd53c216adf6b5ae7cfb86aa5724ce41a1d67092"
-      abi: LockedDeal
-      startBlock: 9088264
+      address: "0xd82C03Bd0543b567C9CeC7B822373be2B167f00F"
+      abi: VaultManager
+      startBlock: 34460831
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       entities:
-        - NewPoolCreated
+        - Deposited
+        - NewVaultCreated
+        - OwnershipTransferred
+        - VaultDeleted
+        - VaultRoyaltySet
+        - VaultStatusUpdate
+        - Withdrawn
       abis:
-        - name: LockedDeal
-          file: ./abis/LockedDeal.json
+        - name: VaultManager
+          file: ./abis/VaultManager.json
       eventHandlers:
-        - event: NewPoolCreated(uint256,address,uint64,uint256,address)
-          handler: handleNewPoolCreated
-      file: ./src/locked-deal.ts
+        - event: Deposited(indexed uint256,indexed address,uint256)
+          handler: handleDeposited
+        - event: NewVaultCreated(indexed uint256,indexed address)
+          handler: handleNewVaultCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: VaultDeleted(indexed uint256,indexed address)
+          handler: handleVaultDeleted
+        - event: VaultRoyaltySet(uint256,indexed address,indexed address,indexed uint96)
+          handler: handleVaultRoyaltySet
+        - event: VaultStatusUpdate(indexed uint256,indexed bool,indexed bool)
+          handler: handleVaultStatusUpdate
+        - event: Withdrawn(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleWithdrawn
+      file: ./src/vault-manager.ts
+  - kind: ethereum
+    name: LockDealNFT
+    network: bsc
+    source:
+      address: "0x3d2C83bbBbfB54087d46B80585253077509c21AE"
+      abi: LockDealNFT
+      startBlock: 34460845
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - BaseURIChanged
+        - BatchMetadataUpdate
+        - ContractApproved
+        - MetadataUpdate
+        - LockDealNFTOwnershipTransferred
+        - PoolSplit
+        - TokenWithdrawn
+        - Transfer
+      abis:
+        - name: LockDealNFT
+          file: ./abis/LockDealNFT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: BaseURIChanged(string,string)
+          handler: handleBaseURIChanged
+        - event: BatchMetadataUpdate(uint256,uint256)
+          handler: handleBatchMetadataUpdate
+        - event: ContractApproved(indexed address,bool)
+          handler: handleContractApproved
+        - event: MetadataUpdate(uint256)
+          handler: handleMetadataUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PoolSplit(uint256,indexed address,uint256,indexed address,uint256,uint256)
+          handler: handlePoolSplit
+        - event: TokenWithdrawn(uint256,indexed address,uint256,uint256)
+          handler: handleTokenWithdrawn
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/lock-deal-nft.ts
+  - kind: ethereum
+    name: DealProvider
+    network: bsc
+    source:
+      address: "0x09b158df31ec4edf2dcd2c1dbda60b69dad01347"
+      abi: DealProvider
+      startBlock: 48387173
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - FirewallAdminUpdated
+        - FirewallUpdated
+        - DealProviderUpdateParams
+      abis:
+        - name: DealProvider
+          file: ./abis/DealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/deal-provider.ts
+  - kind: ethereum
+    name: LockDealProvider
+    network: bsc
+    source:
+      address: "0x2942ee88A75B0c87fC9eEB8DDc9066De84937786"
+      abi: LockDealProvider
+      startBlock: 48549305
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - LockDealProviderFirewallAdminUpdated
+        - LockDealProviderFirewallUpdated
+        - LockDealProviderUpdateParams
+      abis:
+        - name: LockDealProvider
+          file: ./abis/LockDealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/lock-deal-provider.ts
+  - kind: ethereum
+    name: TimedDealProvider
+    network: bsc
+    source:
+      address: "0x43b4CD03ED2504599Ed3Fb56780149A7E7960282"
+      abi: TimedDealProvider
+      startBlock: 48549348
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - TimedDealProviderFirewallAdminUpdated
+        - TimedDealProviderFirewallUpdated
+        - TimedDealProviderUpdateParams
+      abis:
+        - name: TimedDealProvider
+          file: ./abis/TimedDealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/timed-deal-provider.ts
+  - kind: ethereum
+    name: DispenserProvider
+    network: bsc
+    source:
+      address: "0x93441BF11A3Cc2352253013990d68F5A2b1EC3ed"
+      abi: DispenserProvider
+      startBlock: 48387187
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - EIP712DomainChanged
+        - DispenserProviderFirewallAdminUpdated
+        - DispenserProviderFirewallUpdated
+        - PoolCreated
+        - TokensDispensed
+        - DispenserProviderUpdateParams
+      abis:
+        - name: DispenserProvider
+          file: ./abis/DispenserProvider.json
+      eventHandlers:
+        - event: EIP712DomainChanged()
+          handler: handleEIP712DomainChanged
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: PoolCreated(indexed uint256,indexed address)
+          handler: handlePoolCreated
+        - event: TokensDispensed(indexed uint256,indexed address,uint256,uint256)
+          handler: handleTokensDispensed
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/dispenser-provider.ts
