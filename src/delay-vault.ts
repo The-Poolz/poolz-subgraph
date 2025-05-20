@@ -14,14 +14,14 @@ import {
 } from "../generated/DelayVault/DelayVault"
 import {
     GovernorUpdated,
-    OwnershipTransferred,
-    Paused,
+    DelayVaultOwnershipTransferred,
+    DelayVaultPaused,
     RedeemedTokens,
     TokenRedemptionApproval,
     TokenStatusFilter,
-    TransferIn,
-    TransferOut,
-    Unpaused,
+    DelayVaultTransferIn,
+    DelayVaultTransferOut,
+    DelayVaultUnpaused,
     UpdatedMaxDelay,
     UpdatedMinDelays,
     VaultValueChanged,
@@ -40,7 +40,7 @@ export function handleGovernorUpdated(event: GovernorUpdatedEvent): void {
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
-    let entity = new OwnershipTransferred(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    let entity = new DelayVaultOwnershipTransferred(event.transaction.hash.concatI32(event.logIndex.toI32()))
     entity.previousOwner = event.params.previousOwner
     entity.newOwner = event.params.newOwner
 
@@ -52,7 +52,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferredEvent): vo
 }
 
 export function handlePaused(event: PausedEvent): void {
-    let entity = new Paused(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    let entity = new DelayVaultPaused(event.transaction.hash.concatI32(event.logIndex.toI32()))
     entity.account = event.params.account
 
     entity.blockNumber = event.block.number
@@ -101,7 +101,7 @@ export function handleTokenStatusFilter(event: TokenStatusFilterEvent): void {
 }
 
 export function handleTransferIn(event: TransferInEvent): void {
-    let entity = new TransferIn(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    let entity = new DelayVaultTransferIn(event.transaction.hash.concatI32(event.logIndex.toI32()))
     entity.Amount = event.params.Amount
     entity.From = event.params.From
     entity.Token = event.params.Token
@@ -114,7 +114,7 @@ export function handleTransferIn(event: TransferInEvent): void {
 }
 
 export function handleTransferOut(event: TransferOutEvent): void {
-    let entity = new TransferOut(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    let entity = new DelayVaultTransferOut(event.transaction.hash.concatI32(event.logIndex.toI32()))
     entity.Amount = event.params.Amount
     entity.To = event.params.To
     entity.Token = event.params.Token
@@ -127,7 +127,7 @@ export function handleTransferOut(event: TransferOutEvent): void {
 }
 
 export function handleUnpaused(event: UnpausedEvent): void {
-    let entity = new Unpaused(event.transaction.hash.concatI32(event.logIndex.toI32()))
+    let entity = new DelayVaultUnpaused(event.transaction.hash.concatI32(event.logIndex.toI32()))
     entity.account = event.params.account
 
     entity.blockNumber = event.block.number
