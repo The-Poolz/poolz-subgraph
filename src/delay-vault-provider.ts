@@ -28,5 +28,5 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
     entity.transactionHash = event.transaction.hash
 
     entity.save()
-    updatePoolxLockedBalance(event.params.owner, event.params.amount, event.block.timestamp)
+    updatePoolxLockedBalance(event.params.owner, event.params.amount, event.block.timestamp, false)
 }
