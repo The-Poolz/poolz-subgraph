@@ -1,21 +1,26 @@
 import {
-  Deposited as DepositedEvent,
-  NewVaultCreated as NewVaultCreatedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
-  VaultDeleted as VaultDeletedEvent,
-  VaultRoyaltySet as VaultRoyaltySetEvent,
-  VaultStatusUpdate as VaultStatusUpdateEvent,
-  Withdrawn as WithdrawnEvent,
+    Deposited as DepositedEvent,
+    NewVaultCreated as NewVaultCreatedEvent,
+    OwnershipTransferred as OwnershipTransferredEvent,
+    VaultRoyaltySet as VaultRoyaltySetEvent,
+    VaultStatusUpdate as VaultStatusUpdateEvent,
+    Withdrawn as WithdrawnEvent,
 } from "../generated/VaultManager/VaultManager"
 import {
-  Deposited,
-  NewVaultCreated,
-  OwnershipTransferred,
-  VaultDeleted,
-  VaultRoyaltySet,
-  VaultStatusUpdate,
-  Withdrawn,
+    Deposited,
+    NewVaultCreated,
+    OwnershipTransferred,
+    VaultRoyaltySet,
+    VaultStatusUpdate,
+    Withdrawn,
 } from "../generated/schema"
+import {
+    addNewVault,
+    decreaseVaultAmount,
+    increaseVaultAmount,
+    updateVaultStatus,
+    setVaultRoyalty,
+} from "./extendedEntities/vault"
 
 export function handleDeposited(event: DepositedEvent): void {
   let entity = new Deposited(
@@ -30,12 +35,11 @@ export function handleDeposited(event: DepositedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  increaseVaultAmount(event.params.vaultId, event.params.amount)
 }
 
 export function handleNewVaultCreated(event: NewVaultCreatedEvent): void {
-  let entity = new NewVaultCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
+  let entity = new NewVaultCreated(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.vaultId = event.params.vaultId
   entity.tokenAddress = event.params.tokenAddress
 
@@ -44,6 +48,7 @@ export function handleNewVaultCreated(event: NewVaultCreatedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  addNewVault(event.transaction.hash, event.params.vaultId, event.params.tokenAddress)
 }
 
 export function handleOwnershipTransferred(
@@ -54,20 +59,6 @@ export function handleOwnershipTransferred(
   )
   entity.previousOwner = event.params.previousOwner
   entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleVaultDeleted(event: VaultDeletedEvent): void {
-  let entity = new VaultDeleted(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
-  entity.vaultId = event.params.vaultId
-  entity.tokenAddress = event.params.tokenAddress
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -90,6 +81,7 @@ export function handleVaultRoyaltySet(event: VaultRoyaltySetEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  setVaultRoyalty(event.params.vaultId, event.params.receiver, event.params.feeNumerator)
 }
 
 export function handleVaultStatusUpdate(event: VaultStatusUpdateEvent): void {
@@ -105,6 +97,7 @@ export function handleVaultStatusUpdate(event: VaultStatusUpdateEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  updateVaultStatus(event.params.vaultId, event.params.depositStatus, event.params.withdrawStatus)
 }
 
 export function handleWithdrawn(event: WithdrawnEvent): void {
@@ -121,4 +114,5 @@ export function handleWithdrawn(event: WithdrawnEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  decreaseVaultAmount(event.params.vaultId, event.params.amount)
 }

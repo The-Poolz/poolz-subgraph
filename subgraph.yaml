@@ -95,10 +95,10 @@ dataSources:
         - Deposited
         - NewVaultCreated
         - OwnershipTransferred
-        - VaultDeleted
         - VaultRoyaltySet
         - VaultStatusUpdate
         - Withdrawn
+        - Vault
       abis:
         - name: VaultManager
           file: ./abis/VaultManager.json
@@ -109,8 +109,6 @@ dataSources:
           handler: handleNewVaultCreated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: VaultDeleted(indexed uint256,indexed address)
-          handler: handleVaultDeleted
         - event: VaultRoyaltySet(uint256,indexed address,indexed address,indexed uint96)
           handler: handleVaultRoyaltySet
         - event: VaultStatusUpdate(indexed uint256,indexed bool,indexed bool)
