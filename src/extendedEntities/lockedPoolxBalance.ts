@@ -23,3 +23,14 @@ export function updatePoolxLockedBalance(
     entity.blockTimestamp = timestamp
     entity.save()
 }
+
+export function redeemDelayVaultPoolXLockedBalance(owner: Bytes, poolxAmount: BigInt, timestamp: BigInt): void {
+    let entity = PoolxLockedBalance.load(owner)
+    if (entity == null) {
+        return
+    }
+    entity.delayVaultAmount = poolxAmount
+    entity.totalAmount = entity.delayVaultAmount.plus(entity.delayVaultProviderAmount)
+    entity.blockTimestamp = timestamp
+    entity.save()
+}
