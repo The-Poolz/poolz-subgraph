@@ -432,3 +432,10 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type AllowedContract @entity(immutable: false) {
+  id: Bytes!
+  contractAddress: Bytes! # address
+  status: Boolean! # bool
+  blockTimestamp: BigInt!
+}
