@@ -22,6 +22,7 @@ import {
   TokenWithdrawn,
   Transfer,
 } from "../generated/schema"
+import { updateAllowedContract } from "./extendedEntities/allowedContracts"
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -95,6 +96,8 @@ export function handleContractApproved(event: ContractApprovedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  updateAllowedContract(event.params.contractAddress, event.params.status, event.block.timestamp)
 }
 
 export function handleMetadataUpdate(event: MetadataUpdateEvent): void {

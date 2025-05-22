@@ -433,6 +433,13 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type AllowedContract @entity(immutable: false) {
+  id: Bytes!
+  contractAddress: Bytes! # address
+  status: Boolean! # bool
+  blockTimestamp: BigInt!
+}
+
 type PoolxLockedBalance @entity(immutable: false) {
   id: Bytes!        # Primary key, same as owner
   owner: Bytes!     # Duplicate for ease of querying/filtering

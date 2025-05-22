@@ -141,6 +141,7 @@ dataSources:
         - PoolSplit
         - TokenWithdrawn
         - Transfer
+        - AllowedContract
       abis:
         - name: LockDealNFT
           file: ./abis/LockDealNFT.json
