@@ -432,3 +432,12 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type PoolxLockedBalance @entity(immutable: false) {
+  id: Bytes!        # Primary key, same as owner
+  owner: Bytes!     # Duplicate for ease of querying/filtering
+  delayVaultAmount: BigInt!
+  delayVaultProviderAmount: BigInt!
+  totalAmount: BigInt!
+  blockTimestamp: BigInt!
+}
