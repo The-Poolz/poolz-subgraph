@@ -15,6 +15,5 @@ export function updateAllowedContract(contractAddress: Bytes, status: boolean, b
     } else {
         // If status is false, remove the entity from the store
         store.remove("AllowedContract", contractAddress.toHex())
-        return
     }
 }
