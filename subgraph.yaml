@@ -28,6 +28,7 @@ dataSources:
         - UpdatedMaxDelay
         - UpdatedMinDelays
         - VaultValueChanged
+        - PoolxLockedBalance
       abis:
         - name: DelayVault
           file: ./abis/DelayVault.json
@@ -138,6 +139,7 @@ dataSources:
         - PoolSplit
         - TokenWithdrawn
         - Transfer
+        - AllowedContract
       abis:
         - name: LockDealNFT
           file: ./abis/LockDealNFT.json

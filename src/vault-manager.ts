@@ -48,7 +48,7 @@ export function handleNewVaultCreated(event: NewVaultCreatedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  addNewVault(event.transaction.hash, event.params.vaultId, event.params.tokenAddress)
+  addNewVault(event.params.vaultId, event.params.tokenAddress)
 }
 
 export function handleOwnershipTransferred(

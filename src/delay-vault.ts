@@ -26,6 +26,7 @@ import {
     UpdatedMinDelays,
     VaultValueChanged,
 } from "../generated/schema"
+import { updatePoolxLockedBalance } from "./extendedEntities/lockedPoolxBalance"
 
 export function handleGovernorUpdated(event: GovernorUpdatedEvent): void {
     let entity = new GovernorUpdated(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -73,6 +74,7 @@ export function handleRedeemedTokens(event: RedeemedTokensEvent): void {
     entity.transactionHash = event.transaction.hash
 
     entity.save()
+    updatePoolxLockedBalance(event.transaction.from, event.params.RemaningAmount, event.block.timestamp, true)
 }
 
 export function handleTokenRedemptionApproval(event: TokenRedemptionApprovalEvent): void {
@@ -178,4 +180,5 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
     entity.transactionHash = event.transaction.hash
 
     entity.save()
+    updatePoolxLockedBalance(event.params.Owner, event.params.Amount, event.block.timestamp, true)
 }
