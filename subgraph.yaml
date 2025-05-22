@@ -99,6 +99,7 @@ dataSources:
         - VaultRoyaltySet
         - VaultStatusUpdate
         - Withdrawn
+        - PoolxLockedBalance
       abis:
         - name: VaultManager
           file: ./abis/VaultManager.json
