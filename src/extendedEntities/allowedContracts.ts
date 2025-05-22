@@ -1,14 +1,20 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, store } from "@graphprotocol/graph-ts"
 import { AllowedContract } from "../../generated/schema"
 
 export function updateAllowedContract(contractAddress: Bytes, status: boolean, blockTimestamp: BigInt): void {
-    let allowedContract = AllowedContract.load(contractAddress)
+    if (status) {
+        let allowedContract = AllowedContract.load(contractAddress)
+        if (allowedContract == null) {
+            allowedContract = new AllowedContract(contractAddress)
+            allowedContract.contractAddress = contractAddress
+        }
 
-    if (allowedContract == null) {
-        allowedContract = new AllowedContract(contractAddress)
-        allowedContract.contractAddress = contractAddress
+        allowedContract.status = status
+        allowedContract.blockTimestamp = blockTimestamp
+        allowedContract.save()
+    } else {
+        // If status is false, remove the entity from the store
+        store.remove("AllowedContract", contractAddress.toHex())
+        return
     }
-    allowedContract.status = status
-    allowedContract.blockTimestamp = blockTimestamp
-    allowedContract.save()
 }
