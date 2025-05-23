@@ -4,7 +4,6 @@ import {
   Deposited,
   NewVaultCreated,
   OwnershipTransferred,
-  VaultDeleted,
   VaultRoyaltySet,
   VaultStatusUpdate,
   Withdrawn
@@ -82,30 +81,6 @@ export function createOwnershipTransferredEvent(
   )
 
   return ownershipTransferredEvent
-}
-
-export function createVaultDeletedEvent(
-  vaultId: BigInt,
-  tokenAddress: Address
-): VaultDeleted {
-  let vaultDeletedEvent = changetype<VaultDeleted>(newMockEvent())
-
-  vaultDeletedEvent.parameters = new Array()
-
-  vaultDeletedEvent.parameters.push(
-    new ethereum.EventParam(
-      "vaultId",
-      ethereum.Value.fromUnsignedBigInt(vaultId)
-    )
-  )
-  vaultDeletedEvent.parameters.push(
-    new ethereum.EventParam(
-      "tokenAddress",
-      ethereum.Value.fromAddress(tokenAddress)
-    )
-  )
-
-  return vaultDeletedEvent
 }
 
 export function createVaultRoyaltySetEvent(

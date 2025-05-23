@@ -171,15 +171,6 @@ type OwnershipTransferred @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type VaultDeleted @entity(immutable: true) {
-  id: Bytes!
-  vaultId: BigInt! # uint256
-  tokenAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
 type VaultRoyaltySet @entity(immutable: true) {
   id: Bytes!
   vaultId: BigInt! # uint256
@@ -431,6 +422,17 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type Vault @entity(immutable: false) {
+  id: ID!
+  vaultId: BigInt! # uint256
+  token: Bytes! # address
+  balance: BigInt! # uint256
+  depositStatus: Boolean! # bool
+  withdrawStatus: Boolean! # bool
+  royaltyReceiver: Bytes! # address
+  royaltyFeeNumerator: BigInt! # uint96
 }
 
 type AllowedContract @entity(immutable: false) {
