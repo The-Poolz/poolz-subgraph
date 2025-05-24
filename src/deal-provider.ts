@@ -8,6 +8,7 @@ import {
   FirewallUpdated,
   DealProviderUpdateParams,
 } from "../generated/schema"
+import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -49,4 +50,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  updatePoolParams(event.params.poolId, event.params.params)
 }
