@@ -450,3 +450,10 @@ type PoolxLockedBalance @entity(immutable: false) {
   totalAmount: BigInt!
   blockTimestamp: BigInt!
 }
+
+type PoolData @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt!
+  owner: Bytes!
+  params: [BigInt!]! # uint256[]
+}

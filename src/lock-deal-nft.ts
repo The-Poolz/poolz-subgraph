@@ -23,6 +23,7 @@ import {
   Transfer,
 } from "../generated/schema"
 import { updateAllowedContract } from "./extendedEntities/allowedContracts"
+import { updateLockedPool, updatePoolAmount, handleSplitLockedPool } from "./extendedEntities/poolData"
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -145,6 +146,12 @@ export function handlePoolSplit(event: PoolSplitEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  handleSplitLockedPool(
+    event.params.poolId,
+    event.params.newPoolId,
+    event.params.splitLeftAmount,
+    event.params.newSplitLeftAmount,
+  )
 }
 
 export function handleTokenWithdrawn(event: TokenWithdrawnEvent): void {
@@ -161,6 +168,7 @@ export function handleTokenWithdrawn(event: TokenWithdrawnEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  updatePoolAmount(event.params.poolId, event.params.leftAmount)
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -176,4 +184,5 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  updateLockedPool(event.params.tokenId, event.params.to)
 }
