@@ -285,7 +285,7 @@ dataSources:
     source:
       address: "0x094C456cf51234810e9F34089F783ee42D81B7C1"
       abi: DealProvider
-      startBlock: 48387173
+      startBlock: 34460861
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -311,7 +311,7 @@ dataSources:
     source:
       address: "0xEB21d2745E52f39C57c129b44d62cFca37aA0A0a"
       abi: LockDealProvider
-      startBlock: 48549305
+      startBlock: 34460872
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -337,7 +337,7 @@ dataSources:
     source:
       address: "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
       abi: TimedDealProvider
-      startBlock: 48549348
+      startBlock: 34460878
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
