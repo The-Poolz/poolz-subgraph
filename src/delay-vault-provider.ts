@@ -4,7 +4,7 @@ import {
 } from "../generated/DelayVaultProvider/DelayVaultProvider"
 import { UpdateParams, DelayVaultProviderVaultValueChanged } from "../generated/schema"
 import { updatePoolxLockedBalance } from "./extendedEntities/lockedPoolxBalance"
-import { updatePoolParams } from "./extendedEntities/poolData"
+import { updatePoolParams, handleDelayVaultProviderParams } from "./extendedEntities/poolData"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
     let entity = new UpdateParams(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -31,4 +31,5 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
 
     entity.save()
     updatePoolxLockedBalance(event.params.owner, event.params.amount, event.block.timestamp, false)
+    handleDelayVaultProviderParams(event) // Assuming params is an array of BigInt
 }
