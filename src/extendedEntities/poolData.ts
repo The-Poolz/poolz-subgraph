@@ -62,6 +62,7 @@ export function handleDelayVaultProviderParams(event: VaultValueChangedEvent): v
     const amount = event.params.amount
     // find the poolId from the event parameters
     const poolId = getPoolIdFromDelayVaultProviderEvent(event.transaction.hash, event.logIndex.toI32())
+    // update pool params with the new amount
     updatePoolParams(poolId, [amount])
 }
 

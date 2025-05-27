@@ -31,5 +31,5 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
 
     entity.save()
     updatePoolxLockedBalance(event.params.owner, event.params.amount, event.block.timestamp, false)
-    handleDelayVaultProviderParams(event) // Assuming params is an array of BigInt
+    handleDelayVaultProviderParams(event)
 }
