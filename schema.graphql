@@ -450,3 +450,100 @@ type PoolxLockedBalance @entity(immutable: false) {
   totalAmount: BigInt!
   blockTimestamp: BigInt!
 }
+
+type PoolData @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt!
+  owner: Bytes!
+  params: [BigInt!]! # uint256[]
+}
+
+type OldDealProviderFirewallAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldDealProviderFirewallUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFirewall: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldDealProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldLockDealProviderFirewallAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldLockDealProviderFirewallUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFirewall: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldLockDealProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldTimedDealProviderFirewallAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldTimedDealProviderFirewallUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFirewall: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OldTimedDealProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}type CollateralProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type RefundProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

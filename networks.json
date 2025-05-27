@@ -23,6 +23,21 @@
     },
     "DispenserProvider": {
       "address": "0x93441BF11A3Cc2352253013990d68F5A2b1EC3ed"
+    },
+    "CollateralProvider": {
+      "address": "0xabc8a53b30b33190c959d304e1044b37c275d28d"
+    },
+    "RefundProvider": {
+      "address": "0xfd8d52ee64c85f82ebef6ae8a409e5ccddac0c04"
+    },
+    "OldDealProvider": {
+      "address": "0x094C456cf51234810e9F34089F783ee42D81B7C1"
+    },
+    "OldLockDealProvider": {
+      "address": "0xEB21d2745E52f39C57c129b44d62cFca37aA0A0a"
+    },
+    "OldTimedDealProvider": {
+      "address": "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
     }
   }
 }

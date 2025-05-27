@@ -140,6 +140,7 @@ dataSources:
         - TokenWithdrawn
         - Transfer
         - AllowedContract
+        - PoolData
       abis:
         - name: LockDealNFT
           file: ./abis/LockDealNFT.json
@@ -278,3 +279,121 @@ dataSources:
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
       file: ./src/dispenser-provider.ts
+  - kind: ethereum
+    name: OldDealProvider
+    network: bsc
+    source:
+      address: "0x094C456cf51234810e9F34089F783ee42D81B7C1"
+      abi: DealProvider
+      startBlock: 34460861
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - OldDealProviderFirewallAdminUpdated
+        - OldDealProviderFirewallUpdated
+        - OldDealProviderUpdateParams
+      abis:
+        - name: DealProvider
+          file: ./abis/DealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/old-deal-provider.ts
+  - kind: ethereum
+    name: OldLockDealProvider
+    network: bsc
+    source:
+      address: "0xEB21d2745E52f39C57c129b44d62cFca37aA0A0a"
+      abi: LockDealProvider
+      startBlock: 34460872
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - OldLockDealProviderFirewallAdminUpdated
+        - OldLockDealProviderFirewallUpdated
+        - OldLockDealProviderUpdateParams
+      abis:
+        - name: LockDealProvider
+          file: ./abis/LockDealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/old-lock-deal-provider.ts
+  - kind: ethereum
+    name: OldTimedDealProvider
+    network: bsc
+    source:
+      address: "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
+      abi: TimedDealProvider
+      startBlock: 34460878
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - OldTimedDealProviderFirewallAdminUpdated
+        - OldTimedDealProviderFirewallUpdated
+        - OldTimedDealProviderUpdateParams
+      abis:
+        - name: TimedDealProvider
+          file: ./abis/TimedDealProvider.json
+      eventHandlers:
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/old-timed-deal-provider.ts
+  - kind: ethereum
+    name: CollateralProvider
+    network: bsc
+    source:
+      address: "0xabc8a53b30b33190c959d304e1044b37c275d28d"
+      abi: CollateralProvider
+      startBlock: 35149338
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - CollateralProviderUpdateParams
+      abis:
+        - name: CollateralProvider
+          file: ./abis/CollateralProvider.json
+      eventHandlers:
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/collateral-provider.ts
+  - kind: ethereum
+    name: RefundProvider
+    network: bsc
+    source:
+      address: "0xfd8d52ee64c85f82ebef6ae8a409e5ccddac0c04"
+      abi: RefundProvider
+      startBlock: 35149344
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - RefundProviderUpdateParams
+      abis:
+        - name: RefundProvider
+          file: ./abis/RefundProvider.json
+      eventHandlers:
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/refund-provider.ts

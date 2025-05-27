@@ -4,16 +4,16 @@ import {
   UpdateParams as UpdateParamsEvent,
 } from "../generated/TimedDealProvider/TimedDealProvider"
 import {
-  TimedDealProviderFirewallAdminUpdated,
-  TimedDealProviderFirewallUpdated,
-  TimedDealProviderUpdateParams,
+  OldTimedDealProviderFirewallAdminUpdated,
+  OldTimedDealProviderFirewallUpdated,
+  OldTimedDealProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
 ): void {
-  let entity = new TimedDealProviderFirewallAdminUpdated(
+  let entity = new OldTimedDealProviderFirewallAdminUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.newAdmin = event.params.newAdmin
@@ -26,7 +26,7 @@ export function handleFirewallAdminUpdated(
 }
 
 export function handleFirewallUpdated(event: FirewallUpdatedEvent): void {
-  let entity = new TimedDealProviderFirewallUpdated(
+  let entity = new OldTimedDealProviderFirewallUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.newFirewall = event.params.newFirewall
@@ -39,7 +39,7 @@ export function handleFirewallUpdated(event: FirewallUpdatedEvent): void {
 }
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
-  let entity = new TimedDealProviderUpdateParams(
+  let entity = new OldTimedDealProviderUpdateParams(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.poolId = event.params.poolId
