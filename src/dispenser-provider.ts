@@ -14,7 +14,7 @@ import {
   TokensDispensed,
   DispenserProviderUpdateParams,
 } from "../generated/schema"
-import { updatePoolParams } from "./extendedEntities/poolData"
+import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -101,4 +101,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
+  addProviderDataToPoolEntity(event.params.poolId, event.address, "DispenserProvider")
 }

@@ -10,6 +10,8 @@ export function updateLockedPool(poolId: BigInt, owner: Bytes): void {
         poolData = new PoolData(poolId.toHexString())
         poolData.poolId = poolId
         poolData.params = []
+        poolData.provider = Bytes.fromHexString("0x")
+        poolData.providerName = ""
     }
     poolData.owner = owner
     poolData.save()
@@ -70,4 +72,13 @@ function getPoolIdFromDelayVaultProviderEvent(hash: Bytes, logIndex: i32): BigIn
     const OFFSET = 5
     const transferEvent = Transfer.loadInBlock(hash.concatI32(logIndex - OFFSET))
     return transferEvent ? transferEvent.tokenId : BigInt.fromI32(0)
+}
+
+export function addProviderDataToPoolEntity(poolId: BigInt, provider: Bytes, providerName: string): void {
+    let poolData = PoolData.load(poolId.toHexString())
+    if (poolData) {
+        poolData.provider = provider
+        poolData.providerName = providerName
+        poolData.save()
+    }
 }
