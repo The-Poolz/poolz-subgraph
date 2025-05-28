@@ -1,7 +1,6 @@
 import { UpdateParams as UpdateParamsEvent } from "../generated/RefundProvider/RefundProvider"
 import { UpdateParams } from "../generated/schema"
 import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
-import { REFUND_PROVIDER_ADDRESS } from "./config"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
   let entity = new UpdateParams(
@@ -16,5 +15,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
-  addProviderDataToPoolEntity(event.params.poolId, REFUND_PROVIDER_ADDRESS, "RefundProvider")
+  addProviderDataToPoolEntity(event.params.poolId, event.address, "RefundProvider")
 }
