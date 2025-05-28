@@ -1,6 +1,8 @@
 import { UpdateParams as UpdateParamsEvent } from "../generated/CollateralProvider/CollateralProvider"
 import { UpdateParams } from "../generated/schema"
 import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
+import { Address } from "@graphprotocol/graph-ts"
+import { addresses } from "./config"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
   let entity = new UpdateParams(
@@ -15,5 +17,6 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
-  addProviderDataToPoolEntity(event.params.poolId, event.address, "CollateralProvider")
+  const collateralProvider = Address.fromString(addresses.bsc.CollateralProvider.address)
+  addProviderDataToPoolEntity(event.params.poolId, collateralProvider, "CollateralProvider")
 }

@@ -1,6 +1,8 @@
 import { UpdateParams as UpdateParamsEvent } from "../generated/RefundProvider/RefundProvider"
 import { UpdateParams } from "../generated/schema"
 import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
+import { Address } from "@graphprotocol/graph-ts"
+import { addresses } from "./config"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
   let entity = new UpdateParams(
@@ -15,5 +17,6 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
-  addProviderDataToPoolEntity(event.params.poolId, event.address, "RefundProvider")
+  const refundProvider = Address.fromString(addresses.bsc.RefundProvider.address)
+  addProviderDataToPoolEntity(event.params.poolId, refundProvider, "RefundProvider")
 }

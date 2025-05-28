@@ -9,6 +9,8 @@ import {
     handleDelayVaultProviderParams,
     addProviderDataToPoolEntity,
 } from "./extendedEntities/poolData"
+import { Address } from "@graphprotocol/graph-ts"
+import { addresses } from "./config"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
     let entity = new UpdateParams(event.transaction.hash.concatI32(event.logIndex.toI32()))
@@ -36,5 +38,6 @@ export function handleVaultValueChanged(event: VaultValueChangedEvent): void {
     entity.save()
     updatePoolxLockedBalance(event.params.owner, event.params.amount, event.block.timestamp, false)
     const poolId = handleDelayVaultProviderParams(event)
-    addProviderDataToPoolEntity(poolId, event.address, "DelayVaultProvider")
+    const delayVaultProvider = Address.fromString(addresses.bsc.DelayVaultProvider.address)
+    addProviderDataToPoolEntity(poolId, delayVaultProvider, "DelayVaultProvider")
 }
