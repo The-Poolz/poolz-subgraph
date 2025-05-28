@@ -9,8 +9,7 @@ import {
   DealProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
-import { addresses } from "./config"
-import { Address } from "@graphprotocol/graph-ts"
+import { DEAL_PROVIDER_ADDRESS, LOCK_DEAL_PROVIDER_ADDRESS, TIMED_DEAL_PROVIDER_ADDRESS } from "./config"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -54,13 +53,10 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
   if (event.params.params.length == 1) {
-    let dealProvider = Address.fromString(addresses.bsc.DealProvider.address)
-    addProviderDataToPoolEntity(event.params.poolId, dealProvider, "DealProvider")
+    addProviderDataToPoolEntity(event.params.poolId, DEAL_PROVIDER_ADDRESS, "DealProvider")
   } else if (event.params.params.length == 2) {
-    let lockDealProvider = Address.fromString(addresses.bsc.LockDealProvider.address)
-    addProviderDataToPoolEntity(event.params.poolId, lockDealProvider, "LockDealProvider")
+    addProviderDataToPoolEntity(event.params.poolId, LOCK_DEAL_PROVIDER_ADDRESS, "LockDealProvider")
   } else if (event.params.params.length == 3) {
-    let timedDealProvider = Address.fromString(addresses.bsc.TimedDealProvider.address)
-    addProviderDataToPoolEntity(event.params.poolId, timedDealProvider, "TimedDealProvider")
+    addProviderDataToPoolEntity(event.params.poolId, TIMED_DEAL_PROVIDER_ADDRESS, "TimedDealProvider")
   }
 }

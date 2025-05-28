@@ -15,8 +15,7 @@ import {
   DispenserProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
-import { Address } from "@graphprotocol/graph-ts"
-import { addresses } from "./config"
+import { DISPENSER_PROVIDER_ADDRESS } from "./config"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -103,6 +102,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params)
-  const dispenserProvider = Address.fromString(addresses.bsc.DispenserProvider.address)
-  addProviderDataToPoolEntity(event.params.poolId, dispenserProvider, "DispenserProvider")
+  addProviderDataToPoolEntity(event.params.poolId, DISPENSER_PROVIDER_ADDRESS, "DispenserProvider")
 }
