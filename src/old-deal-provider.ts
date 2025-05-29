@@ -9,7 +9,7 @@ import {
   OldDealProviderUpdateParams,
 } from "../generated/schema"
 import { OLD_LOCK_DEAL_PROVIDER_ADDRESS, OLD_TIMED_DEAL_PROVIDER_ADDRESS } from "./config"
-import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
+import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -51,12 +51,11 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params)
   if (event.params.params.length == 1) {
-      addProviderDataToPoolEntity(event.params.poolId, event.address, "OldDealProvider")
+      updatePoolParams(event.params.poolId, event.params.params, event.address, "OldDealProvider")
   } else if (event.params.params.length == 2) {
-      addProviderDataToPoolEntity(event.params.poolId, OLD_LOCK_DEAL_PROVIDER_ADDRESS, "OldLockDealProvider")
+      updatePoolParams(event.params.poolId, event.params.params, OLD_LOCK_DEAL_PROVIDER_ADDRESS, "OldLockDealProvider")
   } else if (event.params.params.length == 3) {
-      addProviderDataToPoolEntity(event.params.poolId, OLD_TIMED_DEAL_PROVIDER_ADDRESS, "OldTimedDealProvider")
+      updatePoolParams(event.params.poolId, event.params.params, OLD_TIMED_DEAL_PROVIDER_ADDRESS, "OldTimedDealProvider")
   }
 }

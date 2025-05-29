@@ -8,7 +8,7 @@ import {
   FirewallUpdated,
   DealProviderUpdateParams,
 } from "../generated/schema"
-import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
+import { updatePoolParams } from "./extendedEntities/poolData"
 import { LOCK_DEAL_PROVIDER_ADDRESS, TIMED_DEAL_PROVIDER_ADDRESS } from "./config"
 
 export function handleFirewallAdminUpdated(
@@ -51,12 +51,11 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params)
   if (event.params.params.length == 1) {
-    addProviderDataToPoolEntity(event.params.poolId, event.address, "DealProvider")
+    updatePoolParams(event.params.poolId, event.params.params, event.address, "DealProvider")
   } else if (event.params.params.length == 2) {
-    addProviderDataToPoolEntity(event.params.poolId, LOCK_DEAL_PROVIDER_ADDRESS, "LockDealProvider")
+    updatePoolParams(event.params.poolId, event.params.params, LOCK_DEAL_PROVIDER_ADDRESS, "LockDealProvider")
   } else if (event.params.params.length == 3) {
-    addProviderDataToPoolEntity(event.params.poolId, TIMED_DEAL_PROVIDER_ADDRESS, "TimedDealProvider")
+    updatePoolParams(event.params.poolId, event.params.params, TIMED_DEAL_PROVIDER_ADDRESS, "TimedDealProvider")
   }
 }

@@ -8,6 +8,7 @@ import {
   TimedDealProviderFirewallUpdated,
   TimedDealProviderUpdateParams,
 } from "../generated/schema"
+import { TIMED_DEAL_PROVIDER_ADDRESS } from "./config"
 import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleFirewallAdminUpdated(
@@ -50,5 +51,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params)
+  updatePoolParams(event.params.poolId, event.params.params, TIMED_DEAL_PROVIDER_ADDRESS, "TimedDealProvider")
 }

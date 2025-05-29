@@ -1,6 +1,6 @@
 import { UpdateParams as UpdateParamsEvent } from "../generated/CollateralProvider/CollateralProvider"
 import { UpdateParams } from "../generated/schema"
-import { updatePoolParams, addProviderDataToPoolEntity } from "./extendedEntities/poolData"
+import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
   let entity = new UpdateParams(
@@ -14,6 +14,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params)
-  addProviderDataToPoolEntity(event.params.poolId, event.address, "CollateralProvider")
+  updatePoolParams(event.params.poolId, event.params.params, event.address, "CollateralProvider")
 }
