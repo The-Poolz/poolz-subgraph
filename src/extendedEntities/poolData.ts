@@ -27,8 +27,19 @@ export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Byt
 }
 
 export function updatePoolAmount(poolId: BigInt, leftAmount: BigInt): void {
-    let poolData = PoolData.load(poolId.toHexString())
-    if (poolData && poolData.params.length > 0) {
+    const poolData = PoolData.load(poolId.toHexString())
+    if (!poolData || poolData.params.length === 0) return
+    
+    const isRefundProvider = poolData.providerName === "RefundProvider"
+    if (isRefundProvider) {
+        const subPoolId = poolId.plus(BigInt.fromI32(1)).toHexString()
+        const subPool = PoolData.load(subPoolId)
+
+        if (subPool && subPool.params.length > 0) {
+            subPool.params[0] = leftAmount
+            subPool.save()
+        }
+    } else {
         poolData.params[0] = leftAmount
         poolData.save()
     }
