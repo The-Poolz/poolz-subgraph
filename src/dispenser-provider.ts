@@ -100,5 +100,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params)
+  updatePoolParams(event.params.poolId, event.params.params, event.address, "DispenserProvider")
 }

@@ -10,15 +10,18 @@ export function updateLockedPool(poolId: BigInt, owner: Bytes): void {
         poolData = new PoolData(poolId.toHexString())
         poolData.poolId = poolId
         poolData.params = []
+        poolData.provider = Bytes.fromHexString("0x")
+        poolData.providerName = ""
     }
     poolData.owner = owner
     poolData.save()
 }
 
-export function updatePoolParams(poolId: BigInt, params: BigInt[]): void {
+export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Bytes, providerName: string): void {
     let poolData = PoolData.load(poolId.toHexString())
     if (poolData) {
         poolData.params = params
+        addProviderDataToPoolEntity(poolData, provider, providerName)
         poolData.save()
     }
 }
@@ -59,15 +62,21 @@ export function handleSplitLockedPool(
 }
 
 export function handleDelayVaultProviderParams(event: VaultValueChangedEvent): void {
-    const amount = event.params.amount
     // find the poolId from the event parameters
     const poolId = getPoolIdFromDelayVaultProviderEvent(event.transaction.hash, event.logIndex.toI32())
     // update pool params with the new amount
-    updatePoolParams(poolId, [amount])
+    updatePoolParams(poolId, [event.params.amount], event.address, "DelayVaultProvider")
 }
 
 function getPoolIdFromDelayVaultProviderEvent(hash: Bytes, logIndex: i32): BigInt {
     const OFFSET = 5
     const transferEvent = Transfer.loadInBlock(hash.concatI32(logIndex - OFFSET))
     return transferEvent ? transferEvent.tokenId : BigInt.fromI32(0)
+}
+
+function addProviderDataToPoolEntity(poolData: PoolData, provider: Bytes, providerName: string): void {
+    if (poolData.providerName == "") {
+        poolData.provider = provider
+        poolData.providerName = providerName
+    }
 }

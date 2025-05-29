@@ -455,6 +455,8 @@ type PoolData @entity(immutable: false) {
   id: ID!
   poolId: BigInt!
   owner: Bytes!
+  provider: Bytes! # address
+  providerName: String! # string
   params: [BigInt!]! # uint256[]
 }
 
