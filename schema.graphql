@@ -549,3 +549,10 @@ type RefundProviderUpdateParams @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type DispenserTokenReserve @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt! # uint256
+  totalAmountTaken: BigInt! # uint256
+  leftAmount: BigInt! # uint256
+}

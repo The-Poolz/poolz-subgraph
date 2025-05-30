@@ -15,6 +15,7 @@ import {
   DispenserProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams } from "./extendedEntities/poolData"
+import { updateDispenserTokenReserve } from "./extendedEntities/dispenser"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -86,6 +87,7 @@ export function handleTokensDispensed(event: TokensDispensedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  updateDispenserTokenReserve(event.params.poolId, event.params.amountTaken, event.params.leftAmount)
 }
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
