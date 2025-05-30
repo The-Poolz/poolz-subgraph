@@ -1,43 +1,37 @@
 {
   "bsc": {
-    "DelayVault": {
-      "address": "0x5eb57B1210338b13E3D5572d5e1670285Aa71702"
-    },
-    "DelayVaultProvider": {
-      "address": "0xeb88Ff7799E0e7b187D98232336722ec9936B86D"
-    },
     "VaultManager": {
-      "address": "0xd82C03Bd0543b567C9CeC7B822373be2B167f00F"
+      "address": "0x7ff9315f538df7ec76ec4815249dd30519726460"
     },
     "LockDealNFT": {
-      "address": "0x3d2C83bbBbfB54087d46B80585253077509c21AE"
+      "address": "0xb16BBDf683fFd6D92290F7610bb10f22f9c71e9e"
     },
     "DealProvider": {
-      "address": "0x09b158df31ec4edf2dcd2c1dbda60b69dad01347"
+      "address": "0x9ba7036aa978509714D137bA7f98e8f66872c19F"
     },
     "LockDealProvider": {
-      "address": "0x2942ee88A75B0c87fC9eEB8DDc9066De84937786"
+      "address": "0xbB407809BadB136E1db0ddb53478D5a830D83805"
     },
     "TimedDealProvider": {
-      "address": "0x43b4CD03ED2504599Ed3Fb56780149A7E7960282"
+      "address": "0x83FF82f14920025576Cd04046335c4b748759121"
     },
     "DispenserProvider": {
-      "address": "0x93441BF11A3Cc2352253013990d68F5A2b1EC3ed"
+      "address": "0x6145F338eCf142813a9Cfcf02A9f95cFC300cfb7"
     },
     "CollateralProvider": {
-      "address": "0xabc8a53b30b33190c959d304e1044b37c275d28d"
+      "address": "0x7521fF2baca97397C8936E35dAc225f6bc1070Cf"
     },
     "RefundProvider": {
-      "address": "0xfd8d52ee64c85f82ebef6ae8a409e5ccddac0c04"
+      "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6"
     },
     "OldDealProvider": {
-      "address": "0x094C456cf51234810e9F34089F783ee42D81B7C1"
+      "address": "0x2Bb9cFF524C76eb2eA27bC6cDbB93447115D8dcC"
     },
     "OldLockDealProvider": {
-      "address": "0xEB21d2745E52f39C57c129b44d62cFca37aA0A0a"
+      "address": "0x6d77B5147CDE6Fa287c1266A33e09a09651D36d0"
     },
     "OldTimedDealProvider": {
-      "address": "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
+      "address": "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489"
     }
   }
 }

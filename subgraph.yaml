@@ -5,89 +5,12 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: DelayVault
-    network: bsc
-    source:
-      address: "0x5eb57B1210338b13E3D5572d5e1670285Aa71702"
-      abi: DelayVault
-      startBlock: 26827211
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.9
-      language: wasm/assemblyscript
-      entities:
-        - GovernorUpdated
-        - DelayVaultOwnershipTransferred
-        - DelayVaultPaused
-        - RedeemedTokens
-        - TokenRedemptionApproval
-        - TokenStatusFilter
-        - DelayVaultTransferIn
-        - DelayVaultTransferOut
-        - DelayVaultUnpaused
-        - UpdatedMaxDelay
-        - UpdatedMinDelays
-        - VaultValueChanged
-        - PoolxLockedBalance
-      abis:
-        - name: DelayVault
-          file: ./abis/DelayVault.json
-      eventHandlers:
-        - event: GovernorUpdated(indexed address,indexed address)
-          handler: handleGovernorUpdated
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: RedeemedTokens(indexed address,uint256,uint256)
-          handler: handleRedeemedTokens
-        - event: TokenRedemptionApproval(indexed address,indexed address,bool)
-          handler: handleTokenRedemptionApproval
-        - event: TokenStatusFilter(indexed address,bool)
-          handler: handleTokenStatusFilter
-        - event: TransferIn(uint256,address,address)
-          handler: handleTransferIn
-        - event: TransferOut(uint256,address,address)
-          handler: handleTransferOut
-        - event: Unpaused(address)
-          handler: handleUnpaused
-        - event: UpdatedMaxDelay(uint256,uint256)
-          handler: handleUpdatedMaxDelay
-        - event: UpdatedMinDelays(indexed address,uint256[],uint256[],uint256[],uint256[])
-          handler: handleUpdatedMinDelays
-        - event: VaultValueChanged(indexed address,indexed address,uint256,uint256,uint256,uint256)
-          handler: handleVaultValueChanged
-      file: ./src/delay-vault.ts
-  - kind: ethereum
-    name: DelayVaultProvider
-    network: bsc
-    source:
-      address: "0xeb88Ff7799E0e7b187D98232336722ec9936B86D"
-      abi: DelayVaultProvider
-      startBlock: 34460919
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.9
-      language: wasm/assemblyscript
-      entities:
-        - UpdateParams
-        - DelayVaultProviderVaultValueChanged
-      abis:
-        - name: DelayVaultProvider
-          file: ./abis/DelayVaultProvider.json
-      eventHandlers:
-        - event: UpdateParams(indexed uint256,uint256[])
-          handler: handleUpdateParams
-        - event: VaultValueChanged(indexed address,indexed address,uint256)
-          handler: handleVaultValueChanged
-      file: ./src/delay-vault-provider.ts
-  - kind: ethereum
     name: VaultManager
     network: bsc
     source:
-      address: "0xd82C03Bd0543b567C9CeC7B822373be2B167f00F"
+      address: "0x7ff9315f538df7ec76ec4815249dd30519726460"
       abi: VaultManager
-      startBlock: 34460831
+      startBlock: 12374159
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -121,9 +44,9 @@ dataSources:
     name: LockDealNFT
     network: bsc
     source:
-      address: "0x3d2C83bbBbfB54087d46B80585253077509c21AE"
+      address: "0xb16BBDf683fFd6D92290F7610bb10f22f9c71e9e"
       abi: LockDealNFT
-      startBlock: 34460845
+      startBlock: 12374279
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -170,9 +93,9 @@ dataSources:
     name: DealProvider
     network: bsc
     source:
-      address: "0x09b158df31ec4edf2dcd2c1dbda60b69dad01347"
+      address: "0x9ba7036aa978509714D137bA7f98e8f66872c19F"
       abi: DealProvider
-      startBlock: 48387173
+      startBlock: 28965218
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -196,9 +119,9 @@ dataSources:
     name: LockDealProvider
     network: bsc
     source:
-      address: "0x2942ee88A75B0c87fC9eEB8DDc9066De84937786"
+      address: "0xbB407809BadB136E1db0ddb53478D5a830D83805"
       abi: LockDealProvider
-      startBlock: 48549305
+      startBlock: 28965227
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -222,9 +145,9 @@ dataSources:
     name: TimedDealProvider
     network: bsc
     source:
-      address: "0x43b4CD03ED2504599Ed3Fb56780149A7E7960282"
+      address: "0x83FF82f14920025576Cd04046335c4b748759121"
       abi: TimedDealProvider
-      startBlock: 48549348
+      startBlock: 28965234
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -248,9 +171,9 @@ dataSources:
     name: DispenserProvider
     network: bsc
     source:
-      address: "0x93441BF11A3Cc2352253013990d68F5A2b1EC3ed"
+      address: "0x6145F338eCf142813a9Cfcf02A9f95cFC300cfb7"
       abi: DispenserProvider
-      startBlock: 48387187
+      startBlock: 28965242
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -283,9 +206,9 @@ dataSources:
     name: OldDealProvider
     network: bsc
     source:
-      address: "0x094C456cf51234810e9F34089F783ee42D81B7C1"
+      address: "0x2Bb9cFF524C76eb2eA27bC6cDbB93447115D8dcC"
       abi: DealProvider
-      startBlock: 34460861
+      startBlock: 12374300
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -309,9 +232,9 @@ dataSources:
     name: OldLockDealProvider
     network: bsc
     source:
-      address: "0xEB21d2745E52f39C57c129b44d62cFca37aA0A0a"
+      address: "0x6d77B5147CDE6Fa287c1266A33e09a09651D36d0"
       abi: LockDealProvider
-      startBlock: 34460872
+      startBlock: 12374314
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -335,9 +258,9 @@ dataSources:
     name: OldTimedDealProvider
     network: bsc
     source:
-      address: "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
+      address: "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489"
       abi: TimedDealProvider
-      startBlock: 34460878
+      startBlock: 12374325
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -361,9 +284,9 @@ dataSources:
     name: CollateralProvider
     network: bsc
     source:
-      address: "0xabc8a53b30b33190c959d304e1044b37c275d28d"
+      address: "0x7521fF2baca97397C8936E35dAc225f6bc1070Cf"
       abi: CollateralProvider
-      startBlock: 35149338
+      startBlock: 12374335
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -381,9 +304,9 @@ dataSources:
     name: RefundProvider
     network: bsc
     source:
-      address: "0xfd8d52ee64c85f82ebef6ae8a409e5ccddac0c04"
+      address: "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6"
       abi: RefundProvider
-      startBlock: 35149344
+      startBlock: 12374344
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
