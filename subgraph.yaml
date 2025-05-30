@@ -185,6 +185,7 @@ dataSources:
         - PoolCreated
         - TokensDispensed
         - DispenserProviderUpdateParams
+        - DispenserTokenReserve
       abis:
         - name: DispenserProvider
           file: ./abis/DispenserProvider.json
