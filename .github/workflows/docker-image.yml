@@ -14,5 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install @graphprotocol/graph-cli
+      run: npm install -g @graphprotocol/graph-cli
+
     - name: test
       run: graph test -d
