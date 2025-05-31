@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install @graphprotocol/graph-cli
-      run: npm install -g @graphprotocol/graph-cli
+    - name: Install
+      run: npm install
 
     - name: Generate typings and build subgraph
       run: |
