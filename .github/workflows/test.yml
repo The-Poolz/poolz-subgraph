@@ -18,5 +18,10 @@ jobs:
     - name: Install @graphprotocol/graph-cli
       run: npm install -g @graphprotocol/graph-cli
 
-    - name: test
+    - name: Generate typings and build subgraph
+      run: |
+        graph codegen
+        graph build
+
+    - name: Test
       run: graph test -d
