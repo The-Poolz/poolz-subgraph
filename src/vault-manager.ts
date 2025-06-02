@@ -21,11 +21,12 @@ import {
     updateVaultStatus,
     setVaultRoyalty,
 } from "./extendedEntities/vault"
+import { SIMPLE_BUILDER_ADDRESS, SIMPLE_REFUND_BUILDER_ADDRESS } from "./config"
+import { handleMassBuildCreation } from "./extendedEntities/massBuildCreation"
+import { handleMassBuildRefundCreation } from "./extendedEntities/massRefundBuildCreation"
 
 export function handleDeposited(event: DepositedEvent): void {
-  let entity = new Deposited(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
+  let entity = new Deposited(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.vaultId = event.params.vaultId
   entity.tokenAddress = event.params.tokenAddress
   entity.amount = event.params.amount
@@ -36,6 +37,21 @@ export function handleDeposited(event: DepositedEvent): void {
 
   entity.save()
   increaseVaultAmount(event.params.vaultId, event.params.amount)
+  const contractAddress = event.transaction.to
+  if (!contractAddress) { // for AssemblyScript compiler 
+    return
+  }
+  else if (contractAddress == SIMPLE_BUILDER_ADDRESS) {
+      handleMassBuildCreation(
+          event.transaction.hash,
+          event.logIndex.toI32(),
+          event.params.vaultId,
+          event.params.tokenAddress,
+          entity.amount
+      )
+  } else if (contractAddress == SIMPLE_REFUND_BUILDER_ADDRESS) {
+    handleMassBuildRefundCreation(event.params.vaultId, event.transaction.from, contractAddress)
+  }
 }
 
 export function handleNewVaultCreated(event: NewVaultCreatedEvent): void {
