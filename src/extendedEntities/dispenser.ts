@@ -1,4 +1,4 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts"
 import { DispenserTokenReserve } from "../../generated/schema"
 
 export function updateDispenserTokenReserve(poolId: BigInt, amount: BigInt, leftAmount: BigInt): void {
