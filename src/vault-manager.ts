@@ -23,7 +23,9 @@ import {
 } from "./extendedEntities/vault"
 
 export function handleDeposited(event: DepositedEvent): void {
-  let entity = new Deposited(event.transaction.hash.concatI32(event.logIndex.toI32()))
+  let entity = new Deposited(
+    event.transaction.hash.concatI32(event.logIndex.toI32()),
+  )
   entity.vaultId = event.params.vaultId
   entity.tokenAddress = event.params.tokenAddress
   entity.amount = event.params.amount
