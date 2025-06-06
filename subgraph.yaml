@@ -191,6 +191,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/deal-provider.ts
   - kind: ethereum
     name: LockDealProvider
@@ -217,6 +218,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/lock-deal-provider.ts
   - kind: ethereum
     name: TimedDealProvider
@@ -243,6 +245,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/timed-deal-provider.ts
   - kind: ethereum
     name: DispenserProvider
@@ -279,6 +282,7 @@ dataSources:
           handler: handleTokensDispensed
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/dispenser-provider.ts
   - kind: ethereum
     name: OldDealProvider
@@ -305,6 +309,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/old-deal-provider.ts
   - kind: ethereum
     name: OldLockDealProvider
@@ -331,6 +336,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/old-lock-deal-provider.ts
   - kind: ethereum
     name: OldTimedDealProvider
@@ -357,6 +363,7 @@ dataSources:
           handler: handleFirewallUpdated
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/old-timed-deal-provider.ts
   - kind: ethereum
     name: CollateralProvider
@@ -397,4 +404,5 @@ dataSources:
       eventHandlers:
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/refund-provider.ts
