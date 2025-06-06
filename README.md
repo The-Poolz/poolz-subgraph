@@ -1,22 +1,22 @@
 # poolz-subgraph
 
 **Subgraph for tracking key on-chain data related to Poolz Protocol's locked pools, vaults, and token dispensers.**  
-Built with [The Graph](https://thegraph.com) to index and query data from smart contracts in a performant, structured way.
+Built with [**The Graph**](https://thegraph.com) to index and query data from smart contracts in a performant, structured way.
 
 ---
 
 ## 📚 Table of Contents
 
-- [Overview](#-overview)
-- [Entities](#-entities)
-    - [AllowedContract](#allowedcontract)
-    - [Vault](#vault)
-    - [DispenserTokenReserve](#dispensertokenreserve)
-    - [PoolData](#pooldata)
-    - [PoolxLockedBalance](#poolxlockedbalance)
-- [Development](#-development)
-- [Example Queries](#-example-queries)
-- [License](#license)
+- [**Overview**](#-overview)
+- [**Development**](#-development)
+- [**Entities**](#-entities)
+    - [**AllowedContract**](#allowedcontract)
+    - [**Vault**](#vault)
+    - [**DispenserTokenReserve**](#dispensertokenreserve)
+    - [**PoolData**](#pooldata)
+    - [**PoolxLockedBalance**](#poolxlockedbalance)
+- [**Example Queries**](#-example-queries)
+- [**License**](#license)
 
 ---
 
@@ -32,6 +32,20 @@ This subgraph indexes events and contract calls from the Poolz ecosystem, specif
 The data is made accessible via a GraphQL API that enables seamless integration with frontends, dashboards, and analytics platforms.
 
 ---
+
+## ⚙ Development
+
+Run codegen and build:
+
+```bash
+graph codegen && graph build
+```
+
+Deploy the subgraph:
+
+```bash
+graph deploy --product hosted-service <GITHUB_USERNAME>/<SUBGRAPH_NAME>
+```
 
 ## 🧩 Entities
 
@@ -85,21 +99,7 @@ Tracks the balance of tokens locked in a Poolx pool.
 
 ---
 
-## ⚙️ Development
-
-Run codegen and build:
-
-```bash
-graph codegen && graph build
-```
-
-Deploy the subgraph:
-
-```bash
-graph deploy --product hosted-service <GITHUB_USERNAME>/<SUBGRAPH_NAME>
-```
-
-## Example Queries
+## 📊 Example Queries
 
 Fetch all allowed contracts
 
@@ -131,17 +131,17 @@ Get vault details by vault ID
 
 Fetch PoolData by pool ID
 
-```
+```graphql
 {
-  poolData(id: "0x5678efgh...") {
-    poolId
-    owner
-    params
-    provider
-    providerName
-    vaultId
-    tokenAddress
-  }
+    poolData(id: "0x5678efgh...") {
+        poolId
+        owner
+        params
+        provider
+        providerName
+        vaultId
+        tokenAddress
+    }
 }
 ```
 
