@@ -1,6 +1,6 @@
 # poolz-subgraph
 
-**A subgraph indexing essential on-chain data from the Poolz Protocol ecosystem.**  
+**Subgraph for tracking key on-chain data related to the Poolz Protocol ecosystem.**  
 Built with [**The Graph**](https://thegraph.com) to enable efficient and structured querying of smart contract events and state, supporting integration with analytics, dashboards, and frontend applications.
 
 ---
