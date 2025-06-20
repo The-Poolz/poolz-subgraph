@@ -1,5 +1,5 @@
-import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts"
-import { DispenserTokenReserve, Deposited, PoolData, TokensDispensed } from "../../generated/schema"
+import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts"
+import { DispenserTokenReserve, Deposited, PoolData } from "../../generated/schema"
 
 export function updateDispenserTokenReserve(poolId: BigInt, amount: BigInt, leftAmount: BigInt): void {
     let reserve = DispenserTokenReserve.load(poolId.toHexString())
@@ -24,12 +24,8 @@ export function saveTokenAndVaultId(hash: Bytes, poolId: BigInt, logIndex: i32):
     }
 }
 
-export function addTokenAndVaultIdToSimpleProvider(
-    hash: Bytes,
-    poolId: BigInt,
-    receipt: ethereum.TransactionReceipt
-): void {
-    let dispenserPoolId = findDispenserPoolId(hash, receipt)
+export function addTokenAndVaultIdToSimpleProvider(poolId: BigInt, receipt: ethereum.TransactionReceipt): void {
+    let dispenserPoolId = findDispenserPoolId(receipt)
     if (dispenserPoolId) {
         let dispenserPoolData = PoolData.load(dispenserPoolId.toHexString())
         let poolData = PoolData.load(poolId.toHexString())
@@ -41,16 +37,16 @@ export function addTokenAndVaultIdToSimpleProvider(
     }
 }
 
-function findDispenserPoolId(hash: Bytes, receipt: ethereum.TransactionReceipt): BigInt | null {
-    const log = receipt.logs[receipt.logs.length - 1]
-    if (
-        log.topics.length > 0 &&
-        log.topics[0].toHexString() == "0xf7a761394901c82f8bf72714602e89a8f2e84aa9a906eb93b4979879e392be2d"
-    ) {
-        // retrieve the poolId from the TokensDispensed event
-        let dispensed = TokensDispensed.loadInBlock(hash.concatI32(log.logIndex.toI32()))
-        if (dispensed) {
-            return dispensed.poolId
+function findDispenserPoolId(receipt: ethereum.TransactionReceipt): BigInt | null {
+    const TOKENS_DISPENSED_TOPIC = "0xf7a761394901c82f8bf72714602e89a8f2e84aa9a906eb93b4979879e392be2d"
+
+    for (let i = 0; i < receipt.logs.length; i++) {
+        let logItem = receipt.logs[i]
+        if (logItem.topics.length >= 3 && logItem.topics[0].toHexString() == TOKENS_DISPENSED_TOPIC) {
+            // topics[1] is bytes32, big-endian, representing the poolId padded on left
+            let reversedBytes = Bytes.fromUint8Array(logItem.topics[1].reverse()) // Convert reversed Uint8Array to Bytes
+            let poolIdBigInt = BigInt.fromUnsignedBytes(reversedBytes)
+            return poolIdBigInt
         }
     }
     return null

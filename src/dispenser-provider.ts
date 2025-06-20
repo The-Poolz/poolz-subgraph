@@ -76,7 +76,7 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
 
   entity.save()
   const receipt = event.receipt
-  if (receipt) addTokenAndVaultIdToSimpleProvider(event.transaction.hash, event.params.poolId, receipt)
+  if (receipt) addTokenAndVaultIdToSimpleProvider(event.params.poolId, receipt)
 }
 
 export function handleTokensDispensed(event: TokensDispensedEvent): void {
