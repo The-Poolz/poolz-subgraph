@@ -2,7 +2,7 @@ import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts"
 import { PoolData, Transfer } from "../../generated/schema"
 import { VaultValueChanged as VaultValueChangedEvent } from "../../generated/DelayVaultProvider/DelayVaultProvider"
 
-export function updateLockedPool(poolId: BigInt, owner: Bytes): void {
+export function updateLockedPool(poolId: BigInt, owner: Bytes, previousOwner: Bytes): void {
     // try to load the existing PoolData entity
     let poolData = PoolData.load(poolId.toHexString())
     // if it doesn't exist, create a new one
@@ -12,7 +12,10 @@ export function updateLockedPool(poolId: BigInt, owner: Bytes): void {
         poolData.params = []
         poolData.provider = Bytes.fromHexString("0x")
         poolData.providerName = ""
+        poolData.vaultId = BigInt.fromI32(0)
+        poolData.tokenAddress = Bytes.fromHexString("0x")
     }
+    poolData.previousOwner = previousOwner
     poolData.owner = owner
     poolData.save()
 }

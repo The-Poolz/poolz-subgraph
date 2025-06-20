@@ -198,10 +198,12 @@ dataSources:
           handler: handleFirewallUpdated
         - event: PoolCreated(indexed uint256,indexed address)
           handler: handlePoolCreated
+          receipt: true
         - event: TokensDispensed(indexed uint256,indexed address,uint256,uint256)
           handler: handleTokensDispensed
         - event: UpdateParams(indexed uint256,uint256[])
           handler: handleUpdateParams
+          receipt: true
       file: ./src/dispenser-provider.ts
   - kind: ethereum
     name: OldDealProvider

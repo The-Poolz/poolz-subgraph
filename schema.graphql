@@ -319,9 +319,12 @@ type AllowedContract @entity(immutable: false) {
 type PoolData @entity(immutable: false) {
   id: ID!
   poolId: BigInt!
+  previousOwner: Bytes! # address
   owner: Bytes!
   provider: Bytes! # address
   providerName: String! # string
+  vaultId: BigInt! # uint256
+  tokenAddress: Bytes! # address
   params: [BigInt!]! # uint256[]
 }
 
