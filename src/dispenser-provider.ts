@@ -15,7 +15,11 @@ import {
   DispenserProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams } from "./extendedEntities/poolData"
-import { updateDispenserTokenReserve } from "./extendedEntities/dispenser"
+import {
+    updateDispenserTokenReserve,
+    saveTokenAndVaultId,
+    addTokenAndVaultIdToSimpleProvider,
+} from "./extendedEntities/dispenser"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -71,6 +75,8 @@ export function handlePoolCreated(event: PoolCreatedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+  const receipt = event.receipt
+  if (receipt) addTokenAndVaultIdToSimpleProvider(event.params.poolId, receipt)
 }
 
 export function handleTokensDispensed(event: TokensDispensedEvent): void {
@@ -103,4 +109,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params, event.address, "DispenserProvider")
+  saveTokenAndVaultId(event.transaction.hash, event.params.poolId, event.logIndex.toI32())
 }
