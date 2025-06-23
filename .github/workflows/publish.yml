@@ -36,7 +36,7 @@ jobs:
         env:
           GRAPH_AUTH_TOKEN: ${{ secrets.GRAPH_AUTH_TOKEN }}
         run: |
-          graph auth --product hosted-service "$GRAPH_AUTH_TOKEN"
+          graph auth "$GRAPH_AUTH_TOKEN"
 
       # (7) 6) Run codegen & build
       - name: Generate typings and build subgraph
@@ -52,4 +52,4 @@ jobs:
         run: |
           echo "Deploying version: $VERSION"
           # The format is <SUBGRAPH_NAME>@<VERSION_LABEL>
-          graph deploy --product hosted-service poolzfinancebsc@$VERSION
+          graph deploy poolzfinancebsc --version-label $VERSION
