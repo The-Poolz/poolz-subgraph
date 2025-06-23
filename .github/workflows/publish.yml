@@ -36,7 +36,7 @@ jobs:
         env:
           GRAPH_AUTH_TOKEN: ${{ secrets.GRAPH_AUTH_TOKEN }}
         run: |
-          graph auth https://api.thegraph.com/deploy/ "$GRAPH_AUTH_TOKEN"
+          graph auth "$GRAPH_AUTH_TOKEN"
 
       # (7) 6) Run codegen & build
       - name: Generate typings and build subgraph
