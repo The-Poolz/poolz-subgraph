@@ -52,4 +52,4 @@ jobs:
         run: |
           echo "Deploying version: $VERSION"
           # The format is <SUBGRAPH_NAME>@<VERSION_LABEL>
-          graph deploy poolzfinancebsc@$VERSION
+          graph deploy poolzfinancebsc --version-label $VERSION
