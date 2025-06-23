@@ -30,10 +30,11 @@ export function updateTotalUserInvested(poolId: BigInt, user: Bytes, amount: Big
         totalUserInvested.poolId = poolId
         totalUserInvested.user = user // make sure `user` field is of type `Bytes`
         totalUserInvested.amount = amount
-        totalUserInvested.blockTimestamp = blockTimestamp
     } else {
         totalUserInvested.amount = totalUserInvested.amount.plus(amount)
     }
+    // Always update the timestamp with the latest invest block
+    totalUserInvested.blockTimestamp = blockTimestamp
 
     totalUserInvested.save()
 }
