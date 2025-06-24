@@ -143,7 +143,9 @@ type NewPoolCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}type Deposited @entity(immutable: true) {
+}
+
+type Deposited @entity(immutable: true) {
   id: Bytes!
   vaultId: BigInt! # uint256
   tokenAddress: Bytes! # address
@@ -557,5 +559,74 @@ type DispenserTokenReserve @entity(immutable: false) {
   id: ID!
   poolId: BigInt! # uint256
   totalAmountTaken: BigInt! # uint256
+  leftAmount: BigInt! # uint256
+}
+
+type InvestProviderEIP712DomainChanged @entity(immutable: true) {
+  id: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type InvestProviderFirewallAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type InvestProviderFirewallUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFirewall: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Invested @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  user: Bytes! # address
+  amount: BigInt! # uint256
+  newNonce: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type InvestNewPoolCreated @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  owner: Bytes! # address
+  poolAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type InvestProviderUpdateParams @entity(immutable: true) {
+  id: Bytes!
+  poolId: BigInt! # uint256
+  params: [BigInt!]! # uint256[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TotalUserInvested @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt! # uint256
+  user: Bytes! # address
+  amount: BigInt! # uint256
+  blockTimestamp: BigInt!
+}
+
+type TotalInvested @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt! # uint256
+  poolAmount: BigInt! # uint256
+  totalInvested: BigInt! # uint256
   leftAmount: BigInt! # uint256
 }

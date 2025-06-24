@@ -407,3 +407,40 @@ dataSources:
           handler: handleUpdateParams
           receipt: true
       file: ./src/refund-provider.ts
+  - kind: ethereum
+    name: InvestProvider
+    network: bsc
+    source:
+      address: "0x80E7DCA0B053D044B0ff477C48e891B0aF01d545"
+      abi: InvestProvider
+      startBlock: 51331387
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - InvestProviderEIP712DomainChanged
+        - InvestProviderFirewallAdminUpdated
+        - InvestProviderFirewallUpdated
+        - Invested
+        - TotalInvested
+        - TotalUserInvested
+        - InvestNewPoolCreated
+        - InvestProviderUpdateParams
+      abis:
+        - name: InvestProvider
+          file: ./abis/InvestProvider.json
+      eventHandlers:
+        - event: EIP712DomainChanged()
+          handler: handleEIP712DomainChanged
+        - event: FirewallAdminUpdated(address)
+          handler: handleFirewallAdminUpdated
+        - event: FirewallUpdated(address)
+          handler: handleFirewallUpdated
+        - event: Invested(indexed uint256,indexed address,uint256,uint256)
+          handler: handleInvested
+        - event: NewPoolCreated(indexed uint256,indexed address,uint256)
+          handler: handleNewPoolCreated
+        - event: UpdateParams(indexed uint256,uint256[])
+          handler: handleUpdateParams
+      file: ./src/invest-provider.ts
