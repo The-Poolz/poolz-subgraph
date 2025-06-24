@@ -14,7 +14,8 @@ import {
   InvestNewPoolCreated,
   UpdateParams,
 } from "../generated/schema"
-import { updateTotalInvested, createTotalInvested, updateTotalUserInvested } from "./extendedEntities/investProvider"
+import { updateTotalInvested, createTotalInvested, updateTotalUserInvested, updateInvestProviderPoolParams } from "./extendedEntities/investProvider"
+import { updatePoolParams } from "./extendedEntities/poolData"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -74,6 +75,7 @@ export function handleInvested(event: InvestedEvent): void {
   entity.save()
   updateTotalUserInvested(event.params.poolId, event.params.user, event.params.amount, event.block.timestamp)
   updateTotalInvested(event.params.poolId, event.params.amount)
+  updateInvestProviderPoolParams(event.params.poolId, event.params.amount)
 }
 
 export function handleNewPoolCreated(event: NewPoolCreatedEvent): void {
@@ -90,6 +92,7 @@ export function handleNewPoolCreated(event: NewPoolCreatedEvent): void {
 
   entity.save()
   createTotalInvested(event.params.poolId, event.params.poolAmount)
+  updatePoolParams(event.params.poolId, [event.params.poolAmount], event.address, "InvestProvider")
 }
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {

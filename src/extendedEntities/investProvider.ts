@@ -1,8 +1,8 @@
 import { BigInt, Bytes, log } from "@graphprotocol/graph-ts"
-import { TotalInvested, TotalUserInvested } from "../../generated/schema"
+import { PoolData, TotalInvested, TotalUserInvested } from "../../generated/schema"
 
 export function updateTotalInvested(poolId: BigInt, amount: BigInt): void {
-    let totalInvested = TotalInvested.load(poolId.toHex()) // id is string
+    let totalInvested = TotalInvested.load(poolId.toHexString()) // id is string
     if (totalInvested == null) {
         log.critical("TotalInvested entity not found for poolId: {}", [poolId.toString()])
     } else {
@@ -13,7 +13,7 @@ export function updateTotalInvested(poolId: BigInt, amount: BigInt): void {
 }
 
 export function createTotalInvested(poolId: BigInt, poolAmount: BigInt): void {
-    let totalInvested = new TotalInvested(poolId.toHex()) // id is string
+    let totalInvested = new TotalInvested(poolId.toHexString()) // id is string
     totalInvested.poolId = poolId
     totalInvested.poolAmount = poolAmount
     totalInvested.leftAmount = poolAmount // Initially, left amount is equal to pool amount
@@ -37,4 +37,12 @@ export function updateTotalUserInvested(poolId: BigInt, user: Bytes, amount: Big
     totalUserInvested.blockTimestamp = blockTimestamp
 
     totalUserInvested.save()
+}
+
+export function updateInvestProviderPoolParams(poolId: BigInt, amount: BigInt): void {
+    let poolData = PoolData.load(poolId.toHexString())
+    if (poolData && poolData.params.length > 1) {
+        poolData.params[1] = poolData.params[1].minus(amount)
+        poolData.save()
+    }
 }
