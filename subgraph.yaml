@@ -29,6 +29,8 @@ dataSources:
         - UpdatedMinDelays
         - VaultValueChanged
         - PoolxLockedBalance
+        - PoolxUnlocks
+        - TotalUnlocksAmount
       abis:
         - name: DelayVault
           file: ./abis/DelayVault.json
