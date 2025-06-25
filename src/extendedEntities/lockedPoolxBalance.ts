@@ -26,7 +26,7 @@ export function updatePoolxLockedBalance(
 
 export function addUnlocksPoolx(poolId: BigInt, amount: BigInt, blockTimestamp: BigInt): void {
     // create new PoolxUnlocks
-    let entity = new PoolxUnlocks(Bytes.fromHexString(poolId.toHex()))
+    let entity = new PoolxUnlocks(poolId.toHexString())
     entity.poolId = poolId
     let poolData = PoolData.load(poolId.toHexString())
     if (poolData == null) {
@@ -42,7 +42,7 @@ export function addUnlocksPoolx(poolId: BigInt, amount: BigInt, blockTimestamp: 
 
 export function removeUnlocksPoolx(poolId: BigInt): void {
     // remove PoolxUnlocks
-    let entity = PoolxUnlocks.load(Bytes.fromHexString(poolId.toHex()))
+    let entity = PoolxUnlocks.load(poolId.toHexString())
     if (entity != null) {
         decreaseTotalUnlocksAmount(entity.amount, entity.blockTimestamp)
         store.remove("PoolxUnlocks", poolId.toHex())
@@ -51,9 +51,9 @@ export function removeUnlocksPoolx(poolId: BigInt): void {
 
 function increaseTotalUnlocksAmount(amount: BigInt, blockTimestamp: BigInt): void {
     const id = "total"
-    let entity = TotalUnlocksAmount.load(Bytes.fromHexString(id))
+    let entity = TotalUnlocksAmount.load(id)
     if (entity == null) {
-        entity = new TotalUnlocksAmount(Bytes.fromHexString(id))
+        entity = new TotalUnlocksAmount(id)
         entity.totalUnlocksAmount = amount
         entity.blockTimestamp = blockTimestamp
     } else {
@@ -64,7 +64,7 @@ function increaseTotalUnlocksAmount(amount: BigInt, blockTimestamp: BigInt): voi
 }
 
 function decreaseTotalUnlocksAmount(amount: BigInt, blockTimestamp: BigInt): void {
-    let entity = TotalUnlocksAmount.load(Bytes.fromHexString("total"))
+    let entity = TotalUnlocksAmount.load("total")
     if (entity != null) {
         entity.totalUnlocksAmount = entity.totalUnlocksAmount.minus(amount)
         entity.blockTimestamp = blockTimestamp
@@ -73,6 +73,6 @@ function decreaseTotalUnlocksAmount(amount: BigInt, blockTimestamp: BigInt): voi
 }
 
 export function isPoolxUnlocksPoolId(poolId: BigInt): boolean {
-    let entity = PoolxUnlocks.load(Bytes.fromHexString(poolId.toHex()))
+    let entity = PoolxUnlocks.load(poolId.toHexString())
     return entity != null
 }
