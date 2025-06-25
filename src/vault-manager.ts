@@ -2,6 +2,7 @@ import {
     Deposited as DepositedEvent,
     NewVaultCreated as NewVaultCreatedEvent,
     OwnershipTransferred as OwnershipTransferredEvent,
+    VaultManager,
     VaultRoyaltySet as VaultRoyaltySetEvent,
     VaultStatusUpdate as VaultStatusUpdateEvent,
     Withdrawn as WithdrawnEvent,
@@ -48,7 +49,8 @@ export function handleNewVaultCreated(event: NewVaultCreatedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  addNewVault(event.params.vaultId, event.params.tokenAddress)
+  const vaultManager = VaultManager.bind(event.address)
+  addNewVault(event.params.vaultId, event.params.tokenAddress, vaultManager.vaultIdToVault(event.params.vaultId))
 }
 
 export function handleOwnershipTransferred(

@@ -1,11 +1,12 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { Vault } from "../../generated/schema"
 
-export function addNewVault(vaultId: BigInt, token: Bytes): void {
+export function addNewVault(vaultId: BigInt, token: Bytes, vaultAddress: Bytes): void {
     let vault = new Vault(vaultId.toHexString())
 
     vault.vaultId = vaultId
     vault.token = token
+    vault.vaultAddress = vaultAddress
     vault.balance = BigInt.zero()
     vault.depositStatus = true
     vault.withdrawStatus = true
