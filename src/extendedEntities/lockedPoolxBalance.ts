@@ -24,7 +24,7 @@ export function updatePoolxLockedBalance(
     entity.save()
 }
 
-export function addUnlocksPoolx(poolId: BigInt, amount: BigInt, blockTimestamp: BigInt): void {
+export function addUnlocksPoolx(poolId: BigInt, amount: BigInt, blockTimestamp: BigInt, unlockTimestamp: BigInt): void {
     // create new PoolxUnlocks
     let entity = new PoolxUnlocks(poolId.toHexString())
     entity.poolId = poolId
@@ -35,7 +35,8 @@ export function addUnlocksPoolx(poolId: BigInt, amount: BigInt, blockTimestamp: 
         entity.owner = poolData.owner
     }
     entity.amount = amount
-    entity.blockTimestamp = blockTimestamp
+    entity.createdAt = blockTimestamp // start timestamp of the unlock
+    entity.unlocksAt = unlockTimestamp // after this timestamp the amount can be unlocked
     increaseTotalUnlocksAmount(amount, blockTimestamp)
     entity.save()
 }
@@ -44,7 +45,7 @@ export function removeUnlocksPoolx(poolId: BigInt): void {
     // remove PoolxUnlocks
     let entity = PoolxUnlocks.load(poolId.toHexString())
     if (entity != null) {
-        decreaseTotalUnlocksAmount(entity.amount, entity.blockTimestamp)
+        decreaseTotalUnlocksAmount(entity.amount, entity.unlocksAt)
         store.remove("PoolxUnlocks", poolId.toHex())
     }
 }
