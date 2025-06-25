@@ -64,7 +64,7 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
           receipt.logs[receipt.logs.length - 1].topics[0].toHexString() ==
               "0xfd70499bbdabaf350949c1a62945ccebabca3f2ce8a2cab10bc50df17862c7ad"
       ) {
-          addUnlocksPoolx(event.params.poolId, event.params.params[1], event.block.timestamp)
+          addUnlocksPoolx(event.params.poolId, event.params.params[0], event.block.timestamp)
       }
   } else if (event.params.params.length == 3) {
       updatePoolParams(event.params.poolId, event.params.params, OLD_TIMED_DEAL_PROVIDER_ADDRESS, "OldTimedDealProvider")
