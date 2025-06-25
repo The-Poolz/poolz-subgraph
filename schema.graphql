@@ -429,6 +429,7 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
 type Vault @entity(immutable: false) {
   id: ID!
   vaultId: BigInt! # uint256
+  vaultAddress: Bytes!
   token: Bytes! # address
   balance: BigInt! # uint256
   depositStatus: Boolean! # bool
