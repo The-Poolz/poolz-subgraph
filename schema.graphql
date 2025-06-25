@@ -453,6 +453,21 @@ type PoolxLockedBalance @entity(immutable: false) {
   blockTimestamp: BigInt!
 }
 
+type PoolxUnlocks @entity(immutable: false) {
+  id: ID!
+  poolId: BigInt!
+  owner: Bytes!
+  amount: BigInt!
+  createdAt: BigInt! # When this record was created (block time)
+  unlocksAt: BigInt! # When the funds become available
+}
+
+type TotalUnlocksAmount @entity(immutable: false) {
+  id: ID!
+  totalUnlocksAmount: BigInt!
+  blockTimestamp: BigInt!
+}
+
 type PoolData @entity(immutable: false) {
   id: ID!
   poolId: BigInt!
