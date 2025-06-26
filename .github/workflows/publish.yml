@@ -1,0 +1,55 @@
+name: “Release → Build & Deploy Subgraph”
+
+# (1) Trigger this workflow when a new Release is published
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Subgraph (Release ${{ github.event.release.tag_name }})
+    runs-on: ubuntu-latest
+
+    steps:
+      # (2) 1) Checkout your repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # (3) 2) Set up Node.js (for Graph CLI)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          cache: 'npm'
+          
+      # (4) 3) Install project dependencies
+      - name: Install NPM dependencies
+        run: npm install
+
+      # (5) 4) Install Graph CLI globally
+      - name: Install Graph CLI
+        run: npm install -g @graphprotocol/graph-cli
+
+      # (6) 5) Authenticate to The Graph (Hosted Service)
+      - name: Authenticate with The Graph
+        env:
+          GRAPH_AUTH_TOKEN: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth "$GRAPH_AUTH_TOKEN"
+
+      # (7) 6) Run codegen & build
+      - name: Generate typings and build subgraph
+        run: |
+          graph codegen
+          graph build
+
+      # (8) 7) Deploy to “poolzfinancebsc” with version = release tag
+      - name: Deploy subgraph to Hosted Service
+        # Pass the release’s tag_name as VERSION
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          echo "Deploying version: $VERSION"
+          # The format is <SUBGRAPH_NAME>@<VERSION_LABEL>
+          graph deploy poolzfinancebsc --version-label $VERSION

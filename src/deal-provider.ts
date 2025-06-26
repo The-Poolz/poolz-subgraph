@@ -9,7 +9,8 @@ import {
   DealProviderUpdateParams,
 } from "../generated/schema"
 import { updatePoolParams } from "./extendedEntities/poolData"
-import { LOCK_DEAL_PROVIDER_ADDRESS, TIMED_DEAL_PROVIDER_ADDRESS } from "./config"
+import { LOCK_DEAL_PROVIDER_ADDRESS, TIMED_DEAL_PROVIDER_ADDRESS, SIMPLE_BUILDER_ADDRESS } from "./config"
+import { handleMassBuildCreation } from "./extendedEntities/massBuildCreation"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -57,5 +58,13 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
     updatePoolParams(event.params.poolId, event.params.params, LOCK_DEAL_PROVIDER_ADDRESS, "LockDealProvider")
   } else if (event.params.params.length == 3) {
     updatePoolParams(event.params.poolId, event.params.params, TIMED_DEAL_PROVIDER_ADDRESS, "TimedDealProvider")
+  }
+  const contractAddress = event.transaction.to
+  const eventReceipt = event.receipt
+  if (!contractAddress || !eventReceipt) { // for AssemblyScript compiler 
+    return
+  }
+  else if (contractAddress.toHex().toLowerCase() == SIMPLE_BUILDER_ADDRESS) {
+      handleMassBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
   }
 }

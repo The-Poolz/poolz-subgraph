@@ -8,8 +8,9 @@ import {
   LockDealProviderFirewallUpdated,
   LockDealProviderUpdateParams,
 } from "../generated/schema"
-import { LOCK_DEAL_PROVIDER_ADDRESS } from "./config"
+import { LOCK_DEAL_PROVIDER_ADDRESS, SIMPLE_BUILDER_ADDRESS } from "./config"
 import { updatePoolParams } from "./extendedEntities/poolData"
+import { handleMassBuildCreation } from "./extendedEntities/massBuildCreation"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -52,4 +53,12 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
 
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params, LOCK_DEAL_PROVIDER_ADDRESS, "LockDealProvider")
+  const contractAddress = event.transaction.to
+  const eventReceipt = event.receipt
+  if (!contractAddress || !eventReceipt) { // for AssemblyScript compiler 
+      return
+  }
+  else if (contractAddress.toHex().toLowerCase() == SIMPLE_BUILDER_ADDRESS) {
+        handleMassBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
+  }
 }

@@ -38,6 +38,9 @@
     },
     "OldTimedDealProvider": {
       "address": "0x48247A03D67fAee33c9b6d9c4348C4C677d0095E"
+    },
+    "InvestProvider": {
+      "address": "0x80E7DCA0B053D044B0ff477C48e891B0aF01d545"
     }
   }
 }

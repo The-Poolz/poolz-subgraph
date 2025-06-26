@@ -2,25 +2,20 @@ import {
   EIP712DomainChanged as EIP712DomainChangedEvent,
   FirewallAdminUpdated as FirewallAdminUpdatedEvent,
   FirewallUpdated as FirewallUpdatedEvent,
-  PoolCreated as PoolCreatedEvent,
-  TokensDispensed as TokensDispensedEvent,
+  Invested as InvestedEvent,
+  NewPoolCreated as NewPoolCreatedEvent,
   UpdateParams as UpdateParamsEvent,
-} from "../generated/DispenserProvider/DispenserProvider"
+} from "../generated/InvestProvider/InvestProvider"
 import {
   EIP712DomainChanged,
-  DispenserProviderFirewallAdminUpdated,
-  DispenserProviderFirewallUpdated,
-  PoolCreated,
-  TokensDispensed,
-  DispenserProviderUpdateParams,
+  FirewallAdminUpdated,
+  FirewallUpdated,
+  Invested,
+  InvestNewPoolCreated,
+  UpdateParams,
 } from "../generated/schema"
+import { updateTotalInvested, createTotalInvested, updateTotalUserInvested, updateInvestProviderPoolParams } from "./extendedEntities/investProvider"
 import { updatePoolParams } from "./extendedEntities/poolData"
-import {
-    updateDispenserTokenReserve,
-    saveTokenAndVaultId,
-    addTokenAndVaultIdToSimpleProvider,
-} from "./extendedEntities/dispenser"
-import { BigInt } from "@graphprotocol/graph-ts"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -39,7 +34,7 @@ export function handleEIP712DomainChanged(
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
 ): void {
-  let entity = new DispenserProviderFirewallAdminUpdated(
+  let entity = new FirewallAdminUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.newAdmin = event.params.newAdmin
@@ -52,7 +47,7 @@ export function handleFirewallAdminUpdated(
 }
 
 export function handleFirewallUpdated(event: FirewallUpdatedEvent): void {
-  let entity = new DispenserProviderFirewallUpdated(
+  let entity = new FirewallUpdated(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.newFirewall = event.params.newFirewall
@@ -64,41 +59,44 @@ export function handleFirewallUpdated(event: FirewallUpdatedEvent): void {
   entity.save()
 }
 
-export function handlePoolCreated(event: PoolCreatedEvent): void {
-  let entity = new PoolCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  )
-  entity.poolId = event.params.poolId
-  entity.provider = event.params.provider
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-  const receipt = event.receipt
-  if (receipt) addTokenAndVaultIdToSimpleProvider(event.params.poolId, receipt)
-}
-
-export function handleTokensDispensed(event: TokensDispensedEvent): void {
-  let entity = new TokensDispensed(
+export function handleInvested(event: InvestedEvent): void {
+  let entity = new Invested(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.poolId = event.params.poolId
   entity.user = event.params.user
-  entity.amountTaken = event.params.amountTaken
-  entity.leftAmount = event.params.leftAmount
+  entity.amount = event.params.amount
+  entity.newNonce = event.params.newNonce
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updateDispenserTokenReserve(event.params.poolId, event.params.amountTaken, event.params.leftAmount)
+  updateTotalUserInvested(event.params.poolId, event.params.user, event.params.amount, event.block.timestamp)
+  updateTotalInvested(event.params.poolId, event.params.amount)
+  updateInvestProviderPoolParams(event.params.poolId, event.params.amount)
+}
+
+export function handleNewPoolCreated(event: NewPoolCreatedEvent): void {
+  let entity = new InvestNewPoolCreated(
+    event.transaction.hash.concatI32(event.logIndex.toI32()),
+  )
+  entity.poolId = event.params.poolId
+  entity.owner = event.params.owner
+  entity.poolAmount = event.params.poolAmount
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+  createTotalInvested(event.params.poolId, event.params.poolAmount)
+  updatePoolParams(event.params.poolId, [event.params.poolAmount], event.address, "InvestProvider")
 }
 
 export function handleUpdateParams(event: UpdateParamsEvent): void {
-  let entity = new DispenserProviderUpdateParams(
+  let entity = new UpdateParams(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.poolId = event.params.poolId
@@ -109,7 +107,4 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updatePoolParams(event.params.poolId, event.params.params, event.address, "DispenserProvider")
-  saveTokenAndVaultId(event.transaction.hash, event.params.poolId, event.logIndex.toI32())
-  updateDispenserTokenReserve(event.params.poolId, BigInt.zero(), event.params.params[0])
 }

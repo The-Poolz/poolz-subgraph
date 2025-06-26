@@ -24,6 +24,8 @@ import {
 } from "../generated/schema"
 import { updateAllowedContract } from "./extendedEntities/allowedContracts"
 import { updateLockedPool, updatePoolAmount, handleSplitLockedPool } from "./extendedEntities/poolData"
+import { BigInt } from "@graphprotocol/graph-ts"
+import { isPoolxUnlocksPoolId, removeUnlocksPoolx } from "./extendedEntities/lockedPoolxBalance"
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -169,6 +171,9 @@ export function handleTokenWithdrawn(event: TokenWithdrawnEvent): void {
 
   entity.save()
   updatePoolAmount(event.params.poolId, event.params.leftAmount)
+  if (isPoolxUnlocksPoolId(event.params.poolId) && event.params.leftAmount.equals(BigInt.fromI32(0))) {
+      removeUnlocksPoolx(event.params.poolId)
+  }
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -184,5 +189,5 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updateLockedPool(event.params.tokenId, event.params.to)
+  updateLockedPool(event.params.tokenId, event.params.to, event.params.from)
 }
