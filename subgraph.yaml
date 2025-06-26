@@ -29,6 +29,8 @@ dataSources:
         - UpdatedMinDelays
         - VaultValueChanged
         - PoolxLockedBalance
+        - PoolxUnlocks
+        - TotalUnlocksAmount
       abis:
         - name: DelayVault
           file: ./abis/DelayVault.json
@@ -108,6 +110,8 @@ dataSources:
           handler: handleDeposited
         - event: NewVaultCreated(indexed uint256,indexed address)
           handler: handleNewVaultCreated
+          calls:
+            VaultManager.vaultAddress: VaultManager[event.address].vaultIdToVault(event.params.vaultId)
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: VaultRoyaltySet(uint256,indexed address,indexed address,indexed uint96)

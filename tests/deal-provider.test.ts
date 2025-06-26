@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { FirewallAdminUpdated } from "../generated/schema"
 import { FirewallAdminUpdated as FirewallAdminUpdatedEvent } from "../generated/DealProvider/DealProvider"
 import { handleFirewallAdminUpdated } from "../src/deal-provider"
@@ -37,7 +37,7 @@ describe("Describe entity assertions", () => {
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
       "FirewallAdminUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "newAdmin",
       "0x0000000000000000000000000000000000000001"
     )

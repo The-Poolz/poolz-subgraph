@@ -7,10 +7,6 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { EIP712DomainChanged, Invested, InvestNewPoolCreated, TotalInvested, TotalUserInvested } from "../generated/schema"
-import {
-  EIP712DomainChanged as EIP712DomainChangedEvent,
-} from "../generated/InvestProvider/InvestProvider"
 import {
   handleEIP712DomainChanged,
   handleInvested,
@@ -67,44 +63,44 @@ describe("Describe entity assertions", () => {
 
     assert.fieldEquals(
       "InvestNewPoolCreated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "poolId",
       "1"
     )
     assert.fieldEquals(
       "InvestNewPoolCreated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "owner",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "InvestNewPoolCreated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "poolAmount",
       "1000"
     )
 
     assert.fieldEquals(
       "Invested",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "poolId",
       "1"
     )
     assert.fieldEquals(
       "Invested",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "user",
       "0x0000000000000000000000000000000000000002"
     )
     assert.fieldEquals(
       "Invested",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "amount",
       "100"
     )
     assert.fieldEquals(
       "Invested",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "newNonce",
       "1"
     )
@@ -132,5 +128,51 @@ describe("Describe entity assertions", () => {
       "0x0000000000000000000000000000000000000002",
     )
     assert.fieldEquals("TotalUserInvested", userId, "amount", "100")
+  })
+})
+
+describe("TotalUserInvested timestamp updates", () => {
+  beforeAll(() => {
+    // create pool first
+    let poolId = BigInt.fromI32(1)
+    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let poolAmount = BigInt.fromI32(1000)
+    let poolEvent = createNewPoolCreatedEvent(poolId, owner, poolAmount)
+    handleNewPoolCreated(poolEvent)
+
+    let user = Address.fromString("0x0000000000000000000000000000000000000002")
+
+    let invest1 = createInvestedEvent(
+      poolId,
+      user,
+      BigInt.fromI32(100),
+      BigInt.fromI32(1),
+    )
+    invest1.block.timestamp = BigInt.fromI32(1000)
+    handleInvested(invest1)
+
+    let invest2 = createInvestedEvent(
+      poolId,
+      user,
+      BigInt.fromI32(50),
+      BigInt.fromI32(2),
+    )
+    invest2.block.timestamp = BigInt.fromI32(2000)
+    handleInvested(invest2)
+  })
+
+  afterAll(() => {
+    clearStore()
+  })
+
+  test("Timestamp overwritten on each invest", () => {
+    // poolId.toHex() + "-" + user.toHex()
+    let id =
+      "0x1" +
+      "-" +
+      "0x0000000000000000000000000000000000000002"
+    assert.entityCount("TotalUserInvested", 1)
+    assert.fieldEquals("TotalUserInvested", id, "amount", "150")
+    assert.fieldEquals("TotalUserInvested", id, "blockTimestamp", "2000")
   })
 })
