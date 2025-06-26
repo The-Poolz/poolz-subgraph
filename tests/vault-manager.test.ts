@@ -39,19 +39,19 @@ describe("Describe entity assertions", () => {
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
       "Deposited",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "vaultId",
       "234"
     )
     assert.fieldEquals(
       "Deposited",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "tokenAddress",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "Deposited",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "amount",
       "234"
     )
