@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { EIP712DomainChanged } from "../generated/schema"
 import {
   EIP712DomainChanged as EIP712DomainChangedEvent,
@@ -83,10 +83,11 @@ describe("TotalUserInvested timestamp updates", () => {
   })
 
   test("Timestamp overwritten on each invest", () => {
+    // poolId.toHex() + "-" + user.toHex()
     let id =
-      "0x" +
-      "1".padStart(64, "0") +
-      "-0x0000000000000000000000000000000000000002"
+      "0x1" +
+      "-" +
+      "0x0000000000000000000000000000000000000002"
     assert.entityCount("TotalUserInvested", 1)
     assert.fieldEquals("TotalUserInvested", id, "amount", "150")
     assert.fieldEquals("TotalUserInvested", id, "blockTimestamp", "2000")

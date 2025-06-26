@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, log } from "@graphprotocol/graph-ts"
 import { UpdateParams } from "../generated/schema"
 import { UpdateParams as UpdateParamsEvent } from "../generated/CollateralProvider/CollateralProvider"
 import { handleUpdateParams } from "../src/collateral-provider"
@@ -36,13 +36,13 @@ describe("Describe entity assertions", () => {
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
       "UpdateParams",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "poolId",
       "234"
     )
     assert.fieldEquals(
       "UpdateParams",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "params",
       "[234]"
     )
