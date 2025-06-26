@@ -43,13 +43,13 @@ describe("Describe entity assertions", () => {
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
       "GovernorUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a00000001",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "oldGovernor",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "GovernorUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a00000001",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "newGovernor",
       "0x0000000000000000000000000000000000000001"
     )
