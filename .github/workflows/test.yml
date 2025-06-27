@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install
+      run: npm install
+
+    - name: Install @graphprotocol/graph-cli
+      run: npm install -g @graphprotocol/graph-cli
+
+    - name: Generate typings and build subgraph
+      run: |
+        graph codegen
+        graph build
+
+    - name: Test
+      run: npm run test
