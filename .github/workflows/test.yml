@@ -27,4 +27,4 @@ jobs:
         graph build
 
     - name: Test
-      run: graph test -d
+      run: npm run test
