@@ -21,15 +21,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
-          cache: 'npm'
+          cache: 'yarn'
           
       # (4) 3) Install project dependencies
-      - name: Install NPM dependencies
-        run: npm install
+      - name: Install Yarn dependencies
+        run: yarn install
 
       # (5) 4) Install Graph CLI globally
       - name: Install Graph CLI
-        run: npm install -g @graphprotocol/graph-cli
+        run: yarn global add @graphprotocol/graph-cli
 
       # (6) 5) Authenticate to The Graph (Hosted Service)
       - name: Authenticate with The Graph
@@ -40,9 +40,7 @@ jobs:
 
       # (7) 6) Run codegen & build
       - name: Generate typings and build subgraph
-        run: |
-          graph codegen
-          graph build
+        run: yarn codegen && yarn build
 
       # (8) 7) Deploy to “poolzfinancebsc” with version = release tag
       - name: Deploy subgraph to Hosted Service
