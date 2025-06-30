@@ -20,6 +20,7 @@ import {
     saveTokenAndVaultId,
     addTokenAndVaultIdToSimpleProvider,
 } from "./extendedEntities/dispenser"
+import { BigInt } from "@graphprotocol/graph-ts"
 
 export function handleEIP712DomainChanged(
   event: EIP712DomainChangedEvent,
@@ -110,4 +111,5 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   entity.save()
   updatePoolParams(event.params.poolId, event.params.params, event.address, "DispenserProvider")
   saveTokenAndVaultId(event.transaction.hash, event.params.poolId, event.logIndex.toI32())
+  updateDispenserTokenReserve(event.params.poolId, BigInt.zero(), event.params.params[0])
 }
