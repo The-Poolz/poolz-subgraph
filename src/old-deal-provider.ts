@@ -8,16 +8,10 @@ import {
     OldDealProviderFirewallUpdated,
     OldDealProviderUpdateParams,
 } from "../generated/schema"
-import {
-    OLD_LOCK_DEAL_PROVIDER_ADDRESS,
-    OLD_TIMED_DEAL_PROVIDER_ADDRESS,
-    SIMPLE_BUILDER_ADDRESS,
-    SIMPLE_REFUND_BUILDER_ADDRESS,
-} from "./config"
+import { OLD_LOCK_DEAL_PROVIDER_ADDRESS, OLD_TIMED_DEAL_PROVIDER_ADDRESS, SIMPLE_BUILDER_ADDRESS } from "./config"
 import { updatePoolParams } from "./extendedEntities/poolData"
 import { handleMassBuildCreation } from "./extendedEntities/massBuildCreation"
 import { addUnlocksPoolx } from "./extendedEntities/lockedPoolxBalance"
-import { handleMassRefundBuildCreation } from "./extendedEntities/massRefundBuildCreation"
 
 export function handleFirewallAdminUpdated(
   event: FirewallAdminUpdatedEvent,
@@ -82,8 +76,10 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
       // for AssemblyScript compiler
       return
   } else if (contractAddress.toHex().toLowerCase() == SIMPLE_BUILDER_ADDRESS) {
-      handleMassBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
-  } else if (contractAddress.toHex().toLowerCase() == SIMPLE_REFUND_BUILDER_ADDRESS) {
-      handleMassRefundBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
+      handleMassBuildCreation(
+          event.transaction.hash,
+          event.params.poolId,
+          eventReceipt
+      )
   }
 }
