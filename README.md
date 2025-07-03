@@ -36,10 +36,24 @@ The data is made accessible via a GraphQL API that enables seamless integration 
 
 ## ⚙ Development
 
+Install dependencies:
+
+```bash
+yarn install
+```
+
 Run codegen and build:
 
 ```bash
-graph codegen && graph build
+yarn codegen && yarn build
+```
+
+Run tests:
+
+```bash
+yarn test
+# or
+npx graph test -d
 ```
 
 Deploy the subgraph:
