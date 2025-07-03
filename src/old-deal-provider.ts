@@ -65,6 +65,7 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
               "0xfd70499bbdabaf350949c1a62945ccebabca3f2ce8a2cab10bc50df17862c7ad"
       ) {
           addUnlocksPoolx(event.params.poolId, event.params.params[0], event.block.timestamp, event.params.params[1])
+          return
       }
   } else if (event.params.params.length == 3) {
       updatePoolParams(event.params.poolId, event.params.params, OLD_TIMED_DEAL_PROVIDER_ADDRESS, "OldTimedDealProvider")
