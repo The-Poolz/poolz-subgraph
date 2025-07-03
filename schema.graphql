@@ -646,3 +646,11 @@ type TotalInvested @entity(immutable: false) {
   totalInvested: BigInt! # uint256
   leftAmount: BigInt! # uint256
 }
+
+type UniqueUsers @entity(immutable: true) {
+  id: ID! # user address as string
+  user: Bytes! # address
+  firstPoolId: BigInt! # first pool the user interacted with
+  firstInteractionTimestamp: BigInt! # timestamp of first interaction
+  firstTransactionHash: Bytes! # hash of first transaction
+}

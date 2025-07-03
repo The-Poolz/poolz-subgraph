@@ -1,8 +1,15 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { PoolData, Transfer } from "../../generated/schema"
 import { VaultValueChanged as VaultValueChangedEvent } from "../../generated/DelayVaultProvider/DelayVaultProvider"
+import { trackUniqueUser } from "./uniqueUsersUtils"
 
-export function updateLockedPool(poolId: BigInt, owner: Bytes, previousOwner: Bytes): void {
+export function updateLockedPool(
+    poolId: BigInt,
+    owner: Bytes,
+    previousOwner: Bytes,
+    timestamp: BigInt,
+    transactionHash: Bytes
+): void {
     // try to load the existing PoolData entity
     let poolData = PoolData.load(poolId.toHexString())
     // if it doesn't exist, create a new one
@@ -18,6 +25,9 @@ export function updateLockedPool(poolId: BigInt, owner: Bytes, previousOwner: By
     poolData.previousOwner = previousOwner
     poolData.owner = owner
     poolData.save()
+
+    // Track unique user interaction
+    trackUniqueUser(owner, poolId, timestamp, transactionHash)
 }
 
 export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Bytes, providerName: string): void {
@@ -77,14 +87,14 @@ export function handleSplitLockedPool(
 
 export function handleDelayVaultProviderParams(event: VaultValueChangedEvent): void {
     // find the poolId from the event parameters
-    const poolId = getPoolIdFromDelayVaultProviderEvent(event.transaction.hash, event.logIndex.toI32())
+    const poolId = getPoolIdFromDelayVaultProviderEvent(event.transaction.hash, event.logIndex)
     // update pool params with the new amount
     updatePoolParams(poolId, [event.params.amount], event.address, "DelayVaultProvider")
 }
 
-function getPoolIdFromDelayVaultProviderEvent(hash: Bytes, logIndex: i32): BigInt {
+function getPoolIdFromDelayVaultProviderEvent(hash: Bytes, logIndex: BigInt): BigInt {
     const OFFSET = 5
-    const transferEvent = Transfer.loadInBlock(hash.concatI32(logIndex - OFFSET))
+    const transferEvent = Transfer.loadInBlock(hash.concatI32(logIndex.toI32() - OFFSET))
     return transferEvent ? transferEvent.tokenId : BigInt.fromI32(0)
 }
 
