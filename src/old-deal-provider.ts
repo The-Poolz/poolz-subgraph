@@ -84,6 +84,6 @@ export function handleUpdateParams(event: UpdateParamsEvent): void {
   } else if (contractAddress.toHex().toLowerCase() == SIMPLE_BUILDER_ADDRESS) {
       handleMassBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
   } else if (contractAddress.toHex().toLowerCase() == SIMPLE_REFUND_BUILDER_ADDRESS) {
-      //handleMassRefundBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
+      handleMassRefundBuildCreation(event.transaction.hash, event.params.poolId, eventReceipt)
   }
 }
