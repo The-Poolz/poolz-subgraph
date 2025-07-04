@@ -54,17 +54,17 @@ jobs:
       - name: "Authenticate with The Graph (Matic)"
         if: inputs.chain == 'matic'
         env:
-          GRAPH_DEPLOY_KEY: ${{ secrets.GRAPH_DEPLOY_KEY_MATIC }}
+          GRAPH_DEPLOY_KEY_MATIC: ${{ secrets.GRAPH_DEPLOY_KEY_MATIC }}
         run: |
-          graph auth --studio $GRAPH_DEPLOY_KEY
+          graph auth --studio $GRAPH_DEPLOY_KEY_MATIC
 
       # Set up authentication for Base
       - name: "Authenticate with The Graph (Base)"
         if: inputs.chain == 'base'
         env:
-          GRAPH_DEPLOY_KEY: ${{ secrets.GRAPH_DEPLOY_KEY_BASE }}
+          GRAPH_DEPLOY_KEY_BASE: ${{ secrets.GRAPH_DEPLOY_KEY_BASE }}
         run: |
-          graph auth --studio $GRAPH_DEPLOY_KEY
+          graph auth --studio $GRAPH_DEPLOY_KEY_BASE
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
