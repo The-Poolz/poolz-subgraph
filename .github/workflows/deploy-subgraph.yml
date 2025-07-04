@@ -2,6 +2,10 @@ name: "Deploy Subgraph"
 
 # Workflow can be triggered manually or via workflow dispatch
 on:
+  push:
+    branches:
+      - multi-chain
+      - multi-chain-workflow
   workflow_dispatch:
     inputs:
       chain:
