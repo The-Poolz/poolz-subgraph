@@ -1,8 +1,14 @@
-import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { PoolData, Transfer } from "../../generated/schema"
-import { VaultValueChanged as VaultValueChangedEvent } from "../../generated/DelayVaultProvider/DelayVaultProvider"
+import { trackUniqueUser } from "./uniqueUsersUtils"
 
-export function updateLockedPool(poolId: BigInt, owner: Bytes, previousOwner: Bytes): void {
+export function updateLockedPool(
+    poolId: BigInt,
+    owner: Bytes,
+    previousOwner: Bytes,
+    timestamp: BigInt,
+    transactionHash: Bytes
+): void {
     // try to load the existing PoolData entity
     let poolData = PoolData.load(poolId.toHexString())
     // if it doesn't exist, create a new one
@@ -18,6 +24,9 @@ export function updateLockedPool(poolId: BigInt, owner: Bytes, previousOwner: By
     poolData.previousOwner = previousOwner
     poolData.owner = owner
     poolData.save()
+
+    // Track unique user interaction
+    trackUniqueUser(owner, poolId, timestamp, transactionHash)
 }
 
 export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Bytes, providerName: string): void {
@@ -32,7 +41,7 @@ export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Byt
 export function updatePoolAmount(poolId: BigInt, leftAmount: BigInt): void {
     const poolData = PoolData.load(poolId.toHexString())
     if (!poolData || poolData.params.length === 0) return
-    
+
     const isRefundProvider = poolData.providerName === "RefundProvider"
     if (isRefundProvider) {
         const subPoolId = poolId.plus(BigInt.fromI32(1)).toHexString()
@@ -73,19 +82,6 @@ export function handleSplitLockedPool(
         newPoolData.save()
         originalPoolData.save()
     }
-}
-
-export function handleDelayVaultProviderParams(event: VaultValueChangedEvent): void {
-    // find the poolId from the event parameters
-    const poolId = getPoolIdFromDelayVaultProviderEvent(event.transaction.hash, event.logIndex.toI32())
-    // update pool params with the new amount
-    updatePoolParams(poolId, [event.params.amount], event.address, "DelayVaultProvider")
-}
-
-function getPoolIdFromDelayVaultProviderEvent(hash: Bytes, logIndex: i32): BigInt {
-    const OFFSET = 5
-    const transferEvent = Transfer.loadInBlock(hash.concatI32(logIndex - OFFSET))
-    return transferEvent ? transferEvent.tokenId : BigInt.fromI32(0)
 }
 
 function addProviderDataToPoolEntity(poolData: PoolData, provider: Bytes, providerName: string): void {

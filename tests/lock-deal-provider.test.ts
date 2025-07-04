@@ -7,8 +7,6 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { FirewallAdminUpdated } from "../generated/schema"
-import { FirewallAdminUpdated as FirewallAdminUpdatedEvent } from "../generated/LockDealProvider/LockDealProvider"
 import { handleFirewallAdminUpdated } from "../src/lock-deal-provider"
 import { createFirewallAdminUpdatedEvent } from "./lock-deal-provider-utils"
 
@@ -32,12 +30,12 @@ describe("Describe entity assertions", () => {
   // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
 
   test("FirewallAdminUpdated created and stored", () => {
-    assert.entityCount("FirewallAdminUpdated", 1)
+    assert.entityCount("LockDealProviderFirewallAdminUpdated", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
-      "FirewallAdminUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "LockDealProviderFirewallAdminUpdated",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a01000000",
       "newAdmin",
       "0x0000000000000000000000000000000000000001"
     )

@@ -17,7 +17,9 @@ type NewPoolCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}type Deposited @entity(immutable: true) {
+}
+
+type Deposited @entity(immutable: true) {
   id: Bytes!
   vaultId: BigInt! # uint256
   tokenAddress: Bytes! # address
@@ -301,6 +303,7 @@ type DispenserProviderUpdateParams @entity(immutable: true) {
 type Vault @entity(immutable: false) {
   id: ID!
   vaultId: BigInt! # uint256
+  vaultAddress: Bytes!
   token: Bytes! # address
   balance: BigInt! # uint256
   depositStatus: Boolean! # bool
@@ -423,4 +426,12 @@ type DispenserTokenReserve @entity(immutable: false) {
   poolId: BigInt! # uint256
   totalAmountTaken: BigInt! # uint256
   leftAmount: BigInt! # uint256
+}
+
+type UniqueUsers @entity(immutable: true) {
+  id: ID! # user address as string
+  user: Bytes! # address
+  firstPoolId: BigInt! # first pool the user interacted with
+  firstInteractionTimestamp: BigInt! # timestamp of first interaction
+  firstTransactionHash: Bytes! # hash of first transaction
 }

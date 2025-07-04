@@ -24,6 +24,7 @@ import {
 } from "../generated/schema"
 import { updateAllowedContract } from "./extendedEntities/allowedContracts"
 import { updateLockedPool, updatePoolAmount, handleSplitLockedPool } from "./extendedEntities/poolData"
+import { BigInt } from "@graphprotocol/graph-ts"
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -184,5 +185,5 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updateLockedPool(event.params.tokenId, event.params.to, event.params.from)
+  updateLockedPool(event.params.tokenId, event.params.to, event.params.from, event.block.timestamp, event.transaction.hash)
 }
