@@ -1,0 +1,93 @@
+name: "Deploy Subgraph"
+
+# Workflow can be triggered manually or via workflow dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      chain:
+        description: "Target blockchain network"
+        required: true
+        type: choice
+        options:
+          - "matic"
+          - "base"
+        default: "matic"
+      
+      subgraph_name:
+        description: "Name of the subgraph to deploy"
+        required: true
+        type: string
+        default: "test-poolz-subgraph"
+      
+      deploy_key:
+        description: "Deploy key for The Graph Studio (DEPRECATED - use secrets instead)"
+        required: false
+        type: string
+      
+      version:
+        description: "Version label for the deployment"
+        required: true
+        type: string
+        default: "v1.0.0"
+
+jobs:
+  deploy:
+    name: "Deploy Subgraph to ${{ inputs.chain }}"
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout repository
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      # Setup Node.js environment
+      - name: "Setup Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "latest"
+          cache: "yarn"
+
+      # Install dependencies
+      - name: "Install dependencies"
+        run: yarn install
+
+      # Install Graph CLI globally
+      - name: "Install Graph CLI"
+        run: yarn global add @graphprotocol/graph-cli
+
+      # Set up authentication for Matic
+      - name: "Authenticate with The Graph (Matic)"
+        if: inputs.chain == 'matic'
+        env:
+          GRAPH_DEPLOY_KEY: ${{ secrets.GRAPH_DEPLOY_KEY_MATIC }}
+        run: |
+          graph auth --studio $GRAPH_DEPLOY_KEY
+
+      # Set up authentication for Base
+      - name: "Authenticate with The Graph (Base)"
+        if: inputs.chain == 'base'
+        env:
+          GRAPH_DEPLOY_KEY: ${{ secrets.GRAPH_DEPLOY_KEY_BASE }}
+        run: |
+          graph auth --studio $GRAPH_DEPLOY_KEY
+
+      # Generate types and build for the specified chain
+      - name: "Generate types and build subgraph"
+        run: |
+          yarn codegen
+          yarn build:${{ inputs.chain }}
+
+      # Deploy to The Graph Studio
+      - name: "Deploy subgraph"
+        run: |
+          echo "Deploying ${{ inputs.subgraph_name }} version ${{ inputs.version }} to ${{ inputs.chain }}"
+          graph deploy --studio ${{ inputs.subgraph_name }} --version-label ${{ inputs.version }}
+        
+      # Output deployment information
+      - name: "Deployment Summary"
+        run: |
+          echo "🚀 Deployment completed successfully!"
+          echo "📊 Subgraph: ${{ inputs.subgraph_name }}"
+          echo "🔗 Chain: ${{ inputs.chain }}"
+          echo "🏷️  Version: ${{ inputs.version }}"
+          echo "🌐 Studio URL: https://thegraph.com/studio/subgraph/${{ inputs.subgraph_name }}"

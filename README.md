@@ -62,6 +62,24 @@ Deploy the subgraph:
 graph deploy --product hosted-service <PROJECT_NAME>
 ```
 
+### GitHub Actions Deployment
+
+For automated deployments, use the GitHub Actions workflow:
+
+1. **Setup Secrets**: Add the following secrets to your repository:
+   - `GRAPH_DEPLOY_KEY_MATIC`: Deploy key for Polygon/Matic subgraphs
+   - `GRAPH_DEPLOY_KEY_BASE`: Deploy key for Base network subgraphs
+
+2. **Manual Deployment**: 
+   - Go to Actions tab → "Deploy Subgraph"
+   - Select chain (`matic` or `base`)
+   - Enter subgraph name and version
+   - Click "Run workflow"
+
+3. **Supported Networks**:
+   - **matic**: Polygon network
+   - **base**: Base network
+
 ## 🧩 Entities
 
 ### AllowedContract
