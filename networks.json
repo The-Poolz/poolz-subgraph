@@ -1,5 +1,5 @@
 {
-  "bsc": {
+  "base": {
     "VaultManager": {
       "address": "0x7ff9315f538df7ec76ec4815249dd30519726460"
     },
@@ -32,6 +32,52 @@
     },
     "OldTimedDealProvider": {
       "address": "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489"
+    }
+  },
+  "matic": {
+      "VaultManager": {
+      "address": "0x06fd710fD167f1f08b61e457F41D6e7c7DD9AF3D",
+      "startBlock": 51311114
+    },
+    "LockDealNFT": {
+      "address": "0x9C36786836A594e3b355bA572A5Cd6841F69d86e",
+      "startBlock": 51311134
+    },
+    "DealProvider": {
+      "address": "0x2A42701fE4D3a57AF04B0c9d99bABfbB03Fe8657",
+      "startBlock": 70331503
+    },
+    "LockDealProvider": {
+      "address": "0x42669ac65847E4CE67925222aCcF713707a43F6d",
+      "startBlock": 70331523
+    },
+    "TimedDealProvider": {
+      "address": "0xf188c5B4d8CCD2a6E16a853Ba9F2dFd20ce1ed70",
+      "startBlock": 70331550
+    },
+    "DispenserProvider": {
+      "address": "0x55e7bBC157D3Ce3c9b507ec0A7948782e44BB29b",
+      "startBlock": 70331572
+    },
+    "CollateralProvider": {
+      "address": "0x969d6a2a995e0a6e2f82803840581e21ee6f3a97",
+      "startBlock": 58264150
+    },
+    "RefundProvider": {
+      "address": "0x34fbf73bfe879b868ae2c0f205762798e29b7037",
+      "startBlock": 58264281
+    },
+    "OldDealProvider": {
+      "address": "0x0E85639403586c6c8B606AECB8A4b66be64f7A91",
+      "startBlock": 51311150
+    },
+    "OldLockDealProvider": {
+      "address": "0x1FBeaEB2A2030787AF8026cE8C34E071CF4d8C5f",
+      "startBlock": 51311166
+    },
+    "OldTimedDealProvider": {
+      "address": "0x79Ab96f1705AdEa077a42026d77Ee945F802992c",
+      "startBlock": 51311172
     }
   }
 }
