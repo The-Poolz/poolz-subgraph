@@ -1,4 +1,4 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, log } from "@graphprotocol/graph-ts"
 import { UniqueUsers } from "../../generated/schema"
 
 /**
@@ -16,20 +16,22 @@ export function trackUniqueUser(
     timestamp: BigInt,
     transactionHash: Bytes
 ): boolean {
-    const userId = userAddress.toHexString()
+    const userId = userAddress.toHexString().toLowerCase()
+
+    // Always try to load first to check if user exists
     let uniqueUser = UniqueUsers.load(userId)
-    
-    if (!uniqueUser) {
-        // This is a new user - create their record
-        uniqueUser = new UniqueUsers(userId)
-        uniqueUser.user = userAddress
-        uniqueUser.firstPoolId = poolId
-        uniqueUser.firstInteractionTimestamp = timestamp
-        uniqueUser.firstTransactionHash = transactionHash
-        uniqueUser.save()
-        return true // New user
-    } else {
-        // Existing user - no additional action needed
-        return false // Existing user
+
+    if (uniqueUser !== null) {
+        // User already exists, no need to do anything
+        return false
     }
+
+    // Create new user only if it doesn't exist
+    uniqueUser = new UniqueUsers(userId)
+    uniqueUser.user = userAddress
+    uniqueUser.firstPoolId = poolId
+    uniqueUser.firstInteractionTimestamp = timestamp
+    uniqueUser.firstTransactionHash = transactionHash
+    uniqueUser.save()
+    return true // New user
 }

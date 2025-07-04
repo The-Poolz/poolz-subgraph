@@ -1,14 +1,11 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
 import { PoolData, Transfer } from "../../generated/schema"
 import { VaultValueChanged as VaultValueChangedEvent } from "../../generated/DelayVaultProvider/DelayVaultProvider"
-import { trackUniqueUser } from "./uniqueUsersUtils"
 
 export function updateLockedPool(
     poolId: BigInt,
     owner: Bytes,
-    previousOwner: Bytes,
-    timestamp: BigInt,
-    transactionHash: Bytes
+    previousOwner: Bytes
 ): void {
     // try to load the existing PoolData entity
     let poolData = PoolData.load(poolId.toHexString())
@@ -25,9 +22,6 @@ export function updateLockedPool(
     poolData.previousOwner = previousOwner
     poolData.owner = owner
     poolData.save()
-
-    // Track unique user interaction
-    trackUniqueUser(owner, poolId, timestamp, transactionHash)
 }
 
 export function updatePoolParams(poolId: BigInt, params: BigInt[], provider: Bytes, providerName: string): void {
