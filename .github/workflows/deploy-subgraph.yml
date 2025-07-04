@@ -23,7 +23,7 @@ on:
         description: "Version label for the deployment"
         required: true
         type: string
-        default: "v1.0.0"
+        default: "v0.0.1"
 
 jobs:
   deploy:
