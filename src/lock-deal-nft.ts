@@ -21,6 +21,7 @@ import {
   PoolSplit,
   TokenWithdrawn,
   Transfer,
+  UniqueUsers,
 } from "../generated/schema"
 import { updateAllowedContract } from "./extendedEntities/allowedContracts"
 import { updateLockedPool, updatePoolAmount, handleSplitLockedPool } from "./extendedEntities/poolData"
@@ -191,6 +192,16 @@ export function handleTransfer(event: TransferEvent): void {
 
   entity.save()
   updateLockedPool(event.params.tokenId, event.params.to, event.params.from)
-  // Track unique user interaction
-  trackUniqueUser(event.params.to, event.params.tokenId, event.block.timestamp, event.transaction.hash)
+  
+  // Track unique user interaction only for mints (from zero address)
+  if (event.params.from.toHex() == "0x0000000000000000000000000000000000000000") {
+    // Track the user - the utility function will handle uniqueness
+    trackUniqueUser(
+      event.params.to, 
+      event.params.tokenId,
+      event.block.timestamp,
+      event.transaction.hash,
+      event.block.number
+    )
+  }
 }

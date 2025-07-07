@@ -1,37 +1,54 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, log, store } from "@graphprotocol/graph-ts"
 import { UniqueUsers } from "../../generated/schema"
 
 /**
  * Tracks unique users and their first interaction with pools
- * Prevents duplication by checking if user already exists
+ * Uses defensive programming to handle race conditions and ensure absolute uniqueness
  * @param userAddress - User's wallet address
  * @param poolId - Pool ID they're interacting with
  * @param timestamp - Block timestamp of the interaction
  * @param transactionHash - Transaction hash of the interaction
- * @returns boolean indicating if this was a new user (true) or existing user (false)
+ * @param blockNumber - Block number of the interaction
  */
 export function trackUniqueUser(
     userAddress: Bytes,
     poolId: BigInt,
     timestamp: BigInt,
-    transactionHash: Bytes
-): boolean {
+    transactionHash: Bytes,
+    blockNumber: BigInt
+): void {
+    // Use user address as the unique ID (ensuring one record per user)
     const userId = userAddress.toHexString().toLowerCase()
 
-    // Always try to load first to check if user exists
-    let uniqueUser = UniqueUsers.load(userId)
+    log.info("Attempting to track unique user: {} for pool: {}", [userId, poolId.toString()])
 
-    if (uniqueUser !== null) {
-        // User already exists, no need to do anything
-        return false
+    // Check if user already exists using both methods for maximum safety
+    let existingUser = UniqueUsers.load(userId)
+    if (existingUser != null) {
+        log.info("User already tracked (entity exists): {}", [userId])
+        return
     }
 
-    // Create new user only if it doesn't exist
-    uniqueUser = new UniqueUsers(userId)
+    // Double-check with store.get() for absolute certainty
+    let storeCheck = store.get("UniqueUsers", userId)
+    if (storeCheck != null) {
+        log.info("User already tracked (store check): {}", [userId])
+        return
+    }
+
+    // At this point, we're confident the user doesn't exist
+    // Create new user entity
+    log.info("Creating new unique user: {} at block: {}", [userId, blockNumber.toString()])
+
+    let uniqueUser = new UniqueUsers(userId)
     uniqueUser.user = userAddress
     uniqueUser.firstPoolId = poolId
     uniqueUser.firstInteractionTimestamp = timestamp
     uniqueUser.firstTransactionHash = transactionHash
+    uniqueUser.blockNumber = blockNumber
+
+    // Save the entity - database constraint will prevent duplicates
     uniqueUser.save()
-    return true // New user
+
+    log.info("Successfully saved unique user: {} at block: {}", [userId, blockNumber.toString()])
 }

@@ -217,7 +217,6 @@ The UniqueUsers entity is designed to:
 
 **Integration Functions:**
 - `trackUniqueUser()` - Records first interaction, ignores subsequent ones
-- `isExistingUser()` - Checks if user has ever interacted with pools
 
 **Example Integration:**
 ```typescript
@@ -226,16 +225,12 @@ import { trackUniqueUser } from "./extendedEntities/uniqueUsersUtils"
 export function handleTransfer(event: TransferEvent): void {
     // Track unique user interaction
     if (event.params.to != Address.zero()) {
-        const isNewUser = trackUniqueUser(
+        trackUniqueUser(
             event.params.to,
             event.params.tokenId,
             event.block.timestamp,
             event.transaction.hash
         )
-        
-        if (isNewUser) {
-            log.info("New user detected: {}", [event.params.to.toHexString()])
-        }
     }
 }
 ```
@@ -321,7 +316,6 @@ Get all unique users
         user
         firstPoolId
         firstInteractionTimestamp
-        firstTransactionHash
     }
 }
 ```

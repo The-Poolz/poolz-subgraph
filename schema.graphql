@@ -648,9 +648,10 @@ type TotalInvested @entity(immutable: false) {
 }
 
 type UniqueUsers @entity(immutable: true) {
-  id: ID! # user address as string
+  id: ID! # user address (lowercase hex) - ensures one record per user
   user: Bytes! # address
   firstPoolId: BigInt! # first pool the user interacted with
   firstInteractionTimestamp: BigInt! # timestamp of first interaction
   firstTransactionHash: Bytes! # hash of first transaction
+  blockNumber: BigInt! # block number of first interaction
 }
