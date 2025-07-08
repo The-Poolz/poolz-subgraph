@@ -15,7 +15,6 @@ Built with [**The Graph**](https://thegraph.com) to enable efficient and structu
     - [**DispenserTokenReserve**](#dispensertokenreserve)
     - [**PoolData**](#pooldata)
     - [**PoolxLockedBalance**](#poolxlockedbalance)
-    - [**UniqueUsers**](#uniqueusers)
 - [**Example Queries**](#-example-queries)
 - [**License**](#license)
 
@@ -186,55 +185,6 @@ type PoolxLockedBalance @entity(immutable: false) {
 | **`totalAmount`**              | **`BigInt!`** | Total amount of tokens locked.                      |
 | **`blockTimestamp`**           | **`BigInt!`** | Timestamp when the balance was recorded or updated. |
 
-### UniqueUsers
-
-Tracks unique users who have interacted with pools for the first time, preventing duplications and providing user engagement insights.
-
-```graphql
-type UniqueUsers @entity(immutable: true) {
-    id: ID! # user address as string
-    user: Bytes! # address
-    firstPoolId: BigInt! # first pool the user interacted with
-    firstInteractionTimestamp: BigInt! # timestamp of first interaction
-    firstTransactionHash: Bytes! # hash of first transaction
-}
-```
-
-| Field                         | Type          | Description                                    |
-| ----------------------------- | ------------- | ---------------------------------------------- |
-| **`id`**                      | **`ID!`**     | Unique identifier (user address as string).   |
-| **`user`**                    | **`Bytes!`**  | User's wallet address.                         |
-| **`firstPoolId`**             | **`BigInt!`** | ID of the first pool the user interacted with.|
-| **`firstInteractionTimestamp`** | **`BigInt!`** | Timestamp of the user's first interaction.    |
-| **`firstTransactionHash`**    | **`Bytes!`**  | Transaction hash of the first interaction.    |
-
-#### Usage
-
-The UniqueUsers entity is designed to:
-- **Prevent Duplications**: Each user address is stored only once
-- **Track First Interactions**: Records when and where users first engaged with the protocol
-- **Support Analytics**: Provides data for user acquisition and engagement analysis
-
-**Integration Functions:**
-- `trackUniqueUser()` - Records first interaction, ignores subsequent ones
-
-**Example Integration:**
-```typescript
-import { trackUniqueUser } from "./extendedEntities/uniqueUsersUtils"
-
-export function handleTransfer(event: TransferEvent): void {
-    // Track unique user interaction
-    if (event.params.to != Address.zero()) {
-        trackUniqueUser(
-            event.params.to,
-            event.params.tokenId,
-            event.block.timestamp,
-            event.transaction.hash
-        )
-    }
-}
-```
-
 ---
 
 ## 📊 Example Queries
@@ -303,30 +253,6 @@ Get locked balance for a specific owner address
         delayVaultProviderAmount
         totalAmount
         blockTimestamp
-    }
-}
-```
-
-Get all unique users
-
-```graphql
-{
-    uniqueUsers {
-        id
-        user
-        firstPoolId
-        firstInteractionTimestamp
-    }
-}
-```
-
-Get users who first interacted with a specific pool
-
-```graphql
-{
-    uniqueUsers(where: { firstPoolId: "123" }) {
-        user
-        firstInteractionTimestamp
     }
 }
 ```
