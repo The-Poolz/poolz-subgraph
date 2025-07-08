@@ -185,5 +185,5 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
-  updateLockedPool(event.params.tokenId, event.params.to, event.params.from, event.block.timestamp, event.transaction.hash)
+  updateLockedPool(event.params.tokenId, event.params.to, event.params.from)
 }
