@@ -1,6 +1,5 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts"
-import { PoolData, Transfer } from "../../generated/schema"
-import { VaultValueChanged as VaultValueChangedEvent } from "../../generated/DelayVaultProvider/DelayVaultProvider"
+import { PoolData } from "../../generated/schema"
 
 export function updateLockedPool(
     poolId: BigInt,
