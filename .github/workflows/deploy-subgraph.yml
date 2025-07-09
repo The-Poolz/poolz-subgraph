@@ -56,7 +56,7 @@ jobs:
         env:
           GRAPH_DEPLOY_KEY_MATIC: ${{ secrets.GRAPH_DEPLOY_KEY_MATIC }}
         run: |
-          graph auth --studio $GRAPH_DEPLOY_KEY_MATIC
+          graph auth $GRAPH_DEPLOY_KEY_MATIC
 
       # Set up authentication for Base
       - name: "Authenticate with The Graph (Base)"
@@ -64,7 +64,7 @@ jobs:
         env:
           GRAPH_DEPLOY_KEY_BASE: ${{ secrets.GRAPH_DEPLOY_KEY_BASE }}
         run: |
-          graph auth --studio $GRAPH_DEPLOY_KEY_BASE
+          graph auth $GRAPH_DEPLOY_KEY_BASE
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
@@ -76,7 +76,7 @@ jobs:
       - name: "Deploy subgraph"
         run: |
           echo "Deploying ${{ inputs.subgraph_name }} version ${{ inputs.version }} to ${{ inputs.chain }}"
-          graph deploy --studio ${{ inputs.subgraph_name }} --version-label ${{ inputs.version }}
+          graph deploy ${{ inputs.subgraph_name }} --version-label ${{ inputs.version }}
         
       # Output deployment information
       - name: "Deployment Summary"
