@@ -125,5 +125,51 @@
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 21298110
     }
+  },
+  "arbitrum-one": {
+    "VaultManager": {
+      "address": "0x9cfd8c7834be0dfe41f3fe68c29124066d5cd13b",
+      "startBlock": 194768190
+    },
+    "LockDealNFT": {
+      "address": "0xee099538ed077f831cb9af44ffd51ec7fd95c7de",
+      "startBlock": 194768225
+    },
+    "DealProvider": {
+      "address": "0x9C218bBCdae2dD2B85f08b0a3a7D31a6e6E6bffd",
+      "startBlock": 326711050
+    },
+    "LockDealProvider": {
+      "address": "0xB0841e6FD7c51D5148ABcc19EB24c7E361fDa8c0",
+      "startBlock": 326711118
+    },
+    "TimedDealProvider": {
+      "address": "0xF0Bd7c3D038FF9F67Fc64903A3EAC82600Dd37D0",
+      "startBlock": 326711202
+    },
+    "DispenserProvider": {
+      "address": "0x62BD0CF6B93De01a518975B0b117c886c1F1d973",
+      "startBlock": 326711280
+    },
+    "CollateralProvider": {
+      "address": "0x2051f98ca620a4d3e6024f144382d3537452b557",
+      "startBlock": 194768580
+    },
+    "RefundProvider": {
+      "address": "0xaa40d75fc2cdafc61a7c52ac207e17d694102ef2",
+      "startBlock": 194768667
+    },
+    "OldDealProvider": {
+      "address": "0x756cd0834c2610f583b8324934a0269e3fef6f72",
+      "startBlock": 194768309
+    },
+    "OldLockDealProvider": {
+      "address": "0xff1f0872f5462b30acda92a08d2388612f7bf7ee",
+      "startBlock": 194768415
+    },
+    "OldTimedDealProvider": {
+      "address": "0xf027b2d8ea77fca82d8b2b90d2e6705bb398c855",
+      "startBlock": 194768475
+    }
   }
 }

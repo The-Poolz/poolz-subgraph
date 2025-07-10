@@ -12,6 +12,7 @@ on:
           - "matic"
           - "base"
           - "unichain"
+          - "arbi"
         default: "matic"
       
       version:
@@ -68,6 +69,14 @@ jobs:
           GRAPH_DEPLOY_KEY_UNICHAIN: ${{ secrets.GRAPH_DEPLOY_KEY_UNICHAIN }}
         run: |
           graph auth $GRAPH_DEPLOY_KEY_UNICHAIN
+
+      # Set up authentication for Arbitrum One
+      - name: "Authenticate with The Graph (Arbitrum One)"
+        if: inputs.chain == 'arbi'
+        env:
+          GRAPH_DEPLOY_KEY_ARBI: ${{ secrets.GRAPH_DEPLOY_KEY_ARBI }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_ARBI
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
