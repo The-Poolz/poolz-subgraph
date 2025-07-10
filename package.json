@@ -3,10 +3,10 @@
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
-    "build:bsc-testnet": "graph build --network chapel",
     "build": "graph build --network bsc",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolzfinancebsc --network bsc",
+    "build:bsc-testnet": "graph build --network chapel",
     "deploy:bsc-testnet": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolz-testnet-subgraph --network chapel",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolz-subgraph --network bsc",
     "create-local": "graph create --node http://localhost:8020/ poolz-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ poolz-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 poolz-subgraph",

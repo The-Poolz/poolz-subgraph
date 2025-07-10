@@ -631,12 +631,18 @@ type InvestProviderUpdateParams @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type TotalUserInvested @entity(immutable: false) {
+type UserIDOInvestment @entity(immutable: false) {
   id: ID!
   poolId: BigInt! # uint256
   user: Bytes! # address
   amount: BigInt! # uint256
   blockTimestamp: BigInt!
+}
+
+type UserTotalSpent @entity(immutable: false) {
+  id: ID! # user address
+  user: Bytes! # address
+  totalSpent: BigInt! # uint256 - total amount invested across all IDOs
 }
 
 type TotalInvested @entity(immutable: false) {

@@ -59,7 +59,7 @@ describe("Describe entity assertions", () => {
     assert.entityCount("InvestNewPoolCreated", 1)
     assert.entityCount("Invested", 1)
     assert.entityCount("TotalInvested", 1)
-    assert.entityCount("TotalUserInvested", 1)
+    assert.entityCount("UserIDOInvestment", 1)
 
     assert.fieldEquals(
       "InvestNewPoolCreated",
@@ -120,18 +120,28 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals("TotalInvested", poolIdHex, "leftAmount", "900")
 
     let userId = poolIdHex + "-" + userHex
-    assert.fieldEquals("TotalUserInvested", userId, "poolId", "1")
+    assert.fieldEquals("UserIDOInvestment", userId, "poolId", "1")
     assert.fieldEquals(
-      "TotalUserInvested",
+      "UserIDOInvestment",
       userId,
       "user",
       "0x0000000000000000000000000000000000000002",
     )
-    assert.fieldEquals("TotalUserInvested", userId, "amount", "100")
+    assert.fieldEquals("UserIDOInvestment", userId, "amount", "100")
+
+    // Test UserTotalSpent entity
+    assert.entityCount("UserTotalSpent", 1)
+    assert.fieldEquals(
+      "UserTotalSpent",
+      userHex,
+      "user",
+      "0x0000000000000000000000000000000000000002"
+    )
+    assert.fieldEquals("UserTotalSpent", userHex, "totalSpent", "100")
   })
 })
 
-describe("TotalUserInvested timestamp updates", () => {
+describe("UserIDOInvestment timestamp updates", () => {
   beforeAll(() => {
     // create pool first
     let poolId = BigInt.fromI32(1)
@@ -171,8 +181,80 @@ describe("TotalUserInvested timestamp updates", () => {
       "0x1" +
       "-" +
       "0x0000000000000000000000000000000000000002"
-    assert.entityCount("TotalUserInvested", 1)
-    assert.fieldEquals("TotalUserInvested", id, "amount", "150")
-    assert.fieldEquals("TotalUserInvested", id, "blockTimestamp", "2000")
+    assert.entityCount("UserIDOInvestment", 1)
+    assert.fieldEquals("UserIDOInvestment", id, "amount", "150")
+    assert.fieldEquals("UserIDOInvestment", id, "blockTimestamp", "2000")
+
+    // Test UserTotalSpent accumulation across multiple investments
+    let userHex = "0x0000000000000000000000000000000000000002"
+    assert.entityCount("UserTotalSpent", 1)
+    assert.fieldEquals("UserTotalSpent", userHex, "totalSpent", "150") // 100 + 50 = 150
+  })
+})
+
+describe("UserTotalSpent cross-IDO accumulation", () => {
+  beforeAll(() => {
+    // Create multiple pools and multiple users
+    let poolId1 = BigInt.fromI32(10)
+    let poolId2 = BigInt.fromI32(20)
+    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let poolAmount = BigInt.fromI32(1000)
+
+    // Create first pool
+    let newPoolCreatedEvent1 = createNewPoolCreatedEvent(poolId1, owner, poolAmount)
+    handleNewPoolCreated(newPoolCreatedEvent1)
+
+    // Create second pool
+    let newPoolCreatedEvent2 = createNewPoolCreatedEvent(poolId2, owner, poolAmount)
+    handleNewPoolCreated(newPoolCreatedEvent2)
+
+    // User A invests in both pools
+    let userA = Address.fromString("0x0000000000000000000000000000000000000003")
+    let amountA1 = BigInt.fromI32(100) // invest 100 in pool 10
+    let amountA2 = BigInt.fromI32(200) // invest 200 in pool 20
+    
+    let investedEventA1 = createInvestedEvent(poolId1, userA, amountA1, BigInt.fromI32(1))
+    handleInvested(investedEventA1)
+    
+    let investedEventA2 = createInvestedEvent(poolId2, userA, amountA2, BigInt.fromI32(2))
+    handleInvested(investedEventA2)
+
+    // User B invests only in pool 10
+    let userB = Address.fromString("0x0000000000000000000000000000000000000004")
+    let amountB1 = BigInt.fromI32(50) // invest 50 in pool 10
+    
+    let investedEventB1 = createInvestedEvent(poolId1, userB, amountB1, BigInt.fromI32(3))
+    handleInvested(investedEventB1)
+  })
+
+  afterAll(() => {
+    clearStore()
+  })
+
+  test("UserTotalSpent accumulates correctly across multiple IDOs", () => {
+    let userAHex = "0x0000000000000000000000000000000000000003"
+    let userBHex = "0x0000000000000000000000000000000000000004"
+
+    // Should have 2 UserTotalSpent entities (userA and userB)
+    assert.entityCount("UserTotalSpent", 2)
+
+    // User A should have total spent = 100 + 200 = 300
+    assert.fieldEquals("UserTotalSpent", userAHex, "totalSpent", "300")
+    assert.fieldEquals("UserTotalSpent", userAHex, "user", userAHex)
+
+    // User B should have total spent = 50
+    assert.fieldEquals("UserTotalSpent", userBHex, "totalSpent", "50")
+    assert.fieldEquals("UserTotalSpent", userBHex, "user", userBHex)
+
+    // Check that UserIDOInvestment entities are created correctly
+    assert.entityCount("UserIDOInvestment", 3) // userA-pool10, userA-pool20, userB-pool10
+
+    let userAPool10Id = "0xa" + "-" + userAHex
+    let userAPool20Id = "0x14" + "-" + userAHex
+    let userBPool10Id = "0xa" + "-" + userBHex
+
+    assert.fieldEquals("UserIDOInvestment", userAPool10Id, "amount", "100")
+    assert.fieldEquals("UserIDOInvestment", userAPool20Id, "amount", "200")
+    assert.fieldEquals("UserIDOInvestment", userBPool10Id, "amount", "50")
   })
 })
