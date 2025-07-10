@@ -11,6 +11,7 @@ on:
         options:
           - "matic"
           - "base"
+          - "unichain"
         default: "matic"
       
       version:
@@ -59,6 +60,14 @@ jobs:
           GRAPH_DEPLOY_KEY_BASE: ${{ secrets.GRAPH_DEPLOY_KEY_BASE }}
         run: |
           graph auth $GRAPH_DEPLOY_KEY_BASE
+
+      # Set up authentication for Unichain
+      - name: "Authenticate with The Graph (Unichain)"
+        if: inputs.chain == 'unichain'
+        env:
+          GRAPH_DEPLOY_KEY_UNICHAIN: ${{ secrets.GRAPH_DEPLOY_KEY_UNICHAIN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_UNICHAIN
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
