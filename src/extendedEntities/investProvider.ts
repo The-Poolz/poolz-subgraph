@@ -1,5 +1,5 @@
 import { BigInt, Bytes, log } from "@graphprotocol/graph-ts"
-import { PoolData, TotalInvested, UserIDOInvestment } from "../../generated/schema"
+import { PoolData, TotalInvested, UserIDOInvestment, UserTotalSpent } from "../../generated/schema"
 
 export function updateTotalInvested(poolId: BigInt, amount: BigInt): void {
     let totalInvested = TotalInvested.load(poolId.toHexString()) // id is string
@@ -45,4 +45,18 @@ export function updateInvestProviderPoolParams(poolId: BigInt, amount: BigInt): 
         poolData.params[1] = poolData.params[1].minus(amount)
         poolData.save()
     }
+}
+
+export function updateUserTotalSpent(user: Bytes, amount: BigInt): void {
+    let userTotalSpent = UserTotalSpent.load(user.toHex())
+    
+    if (userTotalSpent == null) {
+        userTotalSpent = new UserTotalSpent(user.toHex())
+        userTotalSpent.user = user
+        userTotalSpent.totalSpent = amount
+    } else {
+        userTotalSpent.totalSpent = userTotalSpent.totalSpent.plus(amount)
+    }
+
+    userTotalSpent.save()
 }
