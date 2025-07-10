@@ -1,5 +1,5 @@
 import { BigInt, Bytes, log } from "@graphprotocol/graph-ts"
-import { PoolData, TotalInvested, TotalUserInvested } from "../../generated/schema"
+import { PoolData, TotalInvested, UserIDOInvestment } from "../../generated/schema"
 
 export function updateTotalInvested(poolId: BigInt, amount: BigInt): void {
     let totalInvested = TotalInvested.load(poolId.toHexString()) // id is string
@@ -21,22 +21,22 @@ export function createTotalInvested(poolId: BigInt, poolAmount: BigInt): void {
     totalInvested.save()
 }
 
-export function updateTotalUserInvested(poolId: BigInt, user: Bytes, amount: BigInt, blockTimestamp: BigInt): void {
+export function updateUserIDOInvestment(poolId: BigInt, user: Bytes, amount: BigInt, blockTimestamp: BigInt): void {
     let id = poolId.toHex() + "-" + user.toHex() // id is string
-    let totalUserInvested = TotalUserInvested.load(id)
+    let userIDOInvestment = UserIDOInvestment.load(id)
 
-    if (totalUserInvested == null) {
-        totalUserInvested = new TotalUserInvested(id)
-        totalUserInvested.poolId = poolId
-        totalUserInvested.user = user // make sure `user` field is of type `Bytes`
-        totalUserInvested.amount = amount
+    if (userIDOInvestment == null) {
+        userIDOInvestment = new UserIDOInvestment(id)
+        userIDOInvestment.poolId = poolId
+        userIDOInvestment.user = user // make sure `user` field is of type `Bytes`
+        userIDOInvestment.amount = amount
     } else {
-        totalUserInvested.amount = totalUserInvested.amount.plus(amount)
+        userIDOInvestment.amount = userIDOInvestment.amount.plus(amount)
     }
     // Always update the timestamp with the latest invest block
-    totalUserInvested.blockTimestamp = blockTimestamp
+    userIDOInvestment.blockTimestamp = blockTimestamp
 
-    totalUserInvested.save()
+    userIDOInvestment.save()
 }
 
 export function updateInvestProviderPoolParams(poolId: BigInt, amount: BigInt): void {

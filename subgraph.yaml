@@ -428,7 +428,7 @@ dataSources:
         - InvestProviderFirewallUpdated
         - Invested
         - TotalInvested
-        - TotalUserInvested
+        - UserIDOInvestment
         - InvestNewPoolCreated
         - InvestProviderUpdateParams
       abis:

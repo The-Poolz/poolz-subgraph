@@ -59,7 +59,7 @@ describe("Describe entity assertions", () => {
     assert.entityCount("InvestNewPoolCreated", 1)
     assert.entityCount("Invested", 1)
     assert.entityCount("TotalInvested", 1)
-    assert.entityCount("TotalUserInvested", 1)
+    assert.entityCount("UserIDOInvestment", 1)
 
     assert.fieldEquals(
       "InvestNewPoolCreated",
@@ -120,18 +120,18 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals("TotalInvested", poolIdHex, "leftAmount", "900")
 
     let userId = poolIdHex + "-" + userHex
-    assert.fieldEquals("TotalUserInvested", userId, "poolId", "1")
+    assert.fieldEquals("UserIDOInvestment", userId, "poolId", "1")
     assert.fieldEquals(
-      "TotalUserInvested",
+      "UserIDOInvestment",
       userId,
       "user",
       "0x0000000000000000000000000000000000000002",
     )
-    assert.fieldEquals("TotalUserInvested", userId, "amount", "100")
+    assert.fieldEquals("UserIDOInvestment", userId, "amount", "100")
   })
 })
 
-describe("TotalUserInvested timestamp updates", () => {
+describe("UserIDOInvestment timestamp updates", () => {
   beforeAll(() => {
     // create pool first
     let poolId = BigInt.fromI32(1)
@@ -171,8 +171,8 @@ describe("TotalUserInvested timestamp updates", () => {
       "0x1" +
       "-" +
       "0x0000000000000000000000000000000000000002"
-    assert.entityCount("TotalUserInvested", 1)
-    assert.fieldEquals("TotalUserInvested", id, "amount", "150")
-    assert.fieldEquals("TotalUserInvested", id, "blockTimestamp", "2000")
+    assert.entityCount("UserIDOInvestment", 1)
+    assert.fieldEquals("UserIDOInvestment", id, "amount", "150")
+    assert.fieldEquals("UserIDOInvestment", id, "blockTimestamp", "2000")
   })
 })
