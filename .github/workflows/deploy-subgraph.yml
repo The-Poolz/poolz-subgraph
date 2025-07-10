@@ -13,12 +13,6 @@ on:
           - "base"
         default: "matic"
       
-      subgraph_name:
-        description: "Name of the subgraph to deploy"
-        required: true
-        type: string
-        default: "test-poolz-subgraph"
-      
       version:
         description: "Version label for the deployment"
         required: true
@@ -75,14 +69,14 @@ jobs:
       # Deploy to The Graph Studio
       - name: "Deploy subgraph"
         run: |
-          echo "Deploying ${{ inputs.subgraph_name }} version ${{ inputs.version }} to ${{ inputs.chain }}"
-          graph deploy ${{ inputs.subgraph_name }} --version-label ${{ inputs.version }}
+          echo "Deploying poolzfinance${{ inputs.chain }} version ${{ inputs.version }} to ${{ inputs.chain }}"
+          graph deploy poolzfinance${{ inputs.chain }} --version-label ${{ inputs.version }}
         
       # Output deployment information
       - name: "Deployment Summary"
         run: |
           echo "🚀 Deployment completed successfully!"
-          echo "📊 Subgraph: ${{ inputs.subgraph_name }}"
+          echo "📊 Subgraph: poolzfinance${{ inputs.chain }}"
           echo "🔗 Chain: ${{ inputs.chain }}"
           echo "🏷️  Version: ${{ inputs.version }}"
-          echo "🌐 Studio URL: https://thegraph.com/studio/subgraph/${{ inputs.subgraph_name }}"
+          echo "🌐 Studio URL: https://thegraph.com/studio/subgraph/poolzfinance${{ inputs.chain }}"
