@@ -171,5 +171,189 @@
       "address": "0xf027b2d8ea77fca82d8b2b90d2e6705bb398c855",
       "startBlock": 194768475
     }
+  },
+  "avalanche": {
+    "VaultManager": {
+      "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6",
+      "startBlock": 52308754
+    },
+    "LockDealNFT": {
+      "address": "0xA2A0bEEfda596Fdb321240dD283D8cBf65b252f1",
+      "startBlock": 52308767
+    },
+    "DealProvider": {
+      "address": "0xa562824D34E555f16544B23305C6CD778B17993c",
+      "startBlock": 60321479
+    },
+    "LockDealProvider": {
+      "address": "0xB1Ecee4191daaD9381DD38A545b31DDcDba7A9A9",
+      "startBlock": 60321492
+    },
+    "TimedDealProvider": {
+      "address": "0x25ea5cf98A46dbaBefd042B6cEebc501b659be78",
+      "startBlock": 60372575
+    },
+    "DispenserProvider": {
+      "address": "0x655a8bc3875aedb2A4bc4aeeF5F84805207cB5DC",
+      "startBlock": 60321510
+    },
+    "CollateralProvider": {
+      "address": "0x9cfd8c7834Be0DfE41F3FE68C29124066D5Cd13b",
+      "startBlock": 52308836
+    },
+    "RefundProvider": {
+      "address": "0xEE099538ED077F831cB9Af44fFD51Ec7Fd95c7DE",
+      "startBlock": 52309500
+    },
+    "OldDealProvider": {
+      "address": "0x65f62efEb1A43064081443791d8C10Db0A1FB511",
+      "startBlock": 52308781
+    },
+    "OldLockDealProvider": {
+      "address": "0x960c76BeC76ebB223B3e29B35a70c40925f38d66",
+      "startBlock": 52308809
+    },
+    "OldTimedDealProvider": {
+      "address": "0x2dd5B5E374B2d32152507100a42CA15f7707F504",
+      "startBlock": 52308821
+    }
+  },
+  "manta": {
+    "VaultManager": {
+      "address": "0x7Ff9315f538dF7eC76Ec4815249Dd30519726460",
+      "startBlock": 1533235
+    },
+    "LockDealNFT": {
+      "address": "0xb16BBDf683fFd6D92290F7610bb10f22f9c71e9e",
+      "startBlock": 1533239
+    },
+    "DealProvider": {
+      "address": "0xD985eFADECBC4A11C731f3086cbad8edE5e3e341",
+      "startBlock": 5049528
+    },
+    "LockDealProvider": {
+      "address": "0x25ea5cf98A46dbaBefd042B6cEebc501b659be78",
+      "startBlock": 5049536
+    },
+    "TimedDealProvider": {
+      "address": "0xaEb7A13D3608C673E99685798f9ba5ACE41119d3",
+      "startBlock": 5049542
+    },
+    "DispenserProvider": {
+      "address": "0xEe25294438bc5542fEAFACC3E08Bb4658EB3C43f",
+      "startBlock": 5056862
+    },
+    "CollateralProvider": {
+      "address": "0x7521fF2baca97397C8936E35dAc225f6bc1070Cf",
+      "startBlock": 1533251
+    },
+    "RefundProvider": {
+      "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6",
+      "startBlock": 1533253
+    },
+    "OldDealProvider": {
+      "address": "0x2Bb9cFF524C76eb2eA27bC6cDbB93447115D8dcC",
+      "startBlock": 1533241
+    },
+    "OldLockDealProvider": {
+      "address": "0x6d77B5147CDE6Fa287c1266A33e09a09651D36d0",
+      "startBlock": 1533244
+    },
+    "OldTimedDealProvider": {
+      "address": "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489",
+      "startBlock": 1533247
+    }
+  },
+  "telos": {
+    "VaultManager": {
+      "address": "0x2Bb9cFF524C76eb2eA27bC6cDbB93447115D8dcC",
+      "startBlock": 314821253
+    },
+    "LockDealNFT": {
+      "address": "0x6d77B5147CDE6Fa287c1266A33e09a09651D36d0",
+      "startBlock": 314821337
+    },
+    "DealProvider": {
+      "address": "0xEE099538ED077F831cB9Af44fFD51Ec7Fd95c7DE",
+      "startBlock": 399471591
+    },
+    "LockDealProvider": {
+      "address": "0xff1f0872f5462b30acdA92a08D2388612F7Bf7EE",
+      "startBlock": 399471642
+    },
+    "TimedDealProvider": {
+      "address": "0x2051f98ca620a4d3E6024f144382d3537452B557",
+      "startBlock": 399471692
+    },
+    "DispenserProvider": {
+      "address": "0xaA40d75Fc2CdAFC61A7c52Ac207e17d694102ef2",
+      "startBlock": 399471750
+    },
+    "CollateralProvider": {
+      "address": "0xA2A0bEEfda596Fdb321240dD283D8cBf65b252f1",
+      "startBlock": 314821537
+    },
+    "RefundProvider": {
+      "address": "0x65f62efEb1A43064081443791d8C10Db0A1FB511",
+      "startBlock": 314821580
+    },
+    "OldDealProvider": {
+      "address": "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489",
+      "startBlock": 314821374
+    },
+    "OldLockDealProvider": {
+      "address": "0x7521fF2baca97397C8936E35dAc225f6bc1070Cf",
+      "startBlock": 314821458
+    },
+    "OldTimedDealProvider": {
+      "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6",
+      "startBlock": 314821506
+    }
+  },
+  "moonbeam": {
+    "VaultManager": {
+      "address": "0x2Bb9cFF524C76eb2eA27bC6cDbB93447115D8dcC",
+      "startBlock": 7430144
+    },
+    "LockDealNFT": {
+      "address": "0x6d77B5147CDE6Fa287c1266A33e09a09651D36d0",
+      "startBlock": 7430152
+    },
+    "DealProvider": {
+      "address": "0xfB98B82D02C5E5241193Cab39956654A555F9A15",
+      "startBlock": 10465979
+    },
+    "LockDealProvider": {
+      "address": "0x1E947Ec4F6B74c746F13604438cE1A3026f30553",
+      "startBlock": 10465984
+    },
+    "TimedDealProvider": {
+      "address": "0x57cbaC84d9345eDd42a0CA31e50bda301268cD7d",
+      "startBlock": 10465986
+    },
+    "DispenserProvider": {
+      "address": "0xa562824D34E555f16544B23305C6CD778B17993c",
+      "startBlock": 10465989
+    },
+    "CollateralProvider": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 7430144
+    },
+    "RefundProvider": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 7430144
+    },
+    "OldDealProvider": {
+      "address": "0x3c845DbB07BdFdD73FbC5Df4bA47EdeA20BCa489",
+      "startBlock": 7430159
+    },
+    "OldLockDealProvider": {
+      "address": "0x7521fF2baca97397C8936E35dAc225f6bc1070Cf",
+      "startBlock": 7430166
+    },
+    "OldTimedDealProvider": {
+      "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6",
+      "startBlock": 7430173
+    }
   }
 }
