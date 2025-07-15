@@ -13,6 +13,10 @@ on:
           - "base"
           - "unichain"
           - "arbi"
+          - "avalanche"
+          - "manta"
+          - "telos"
+          - "moonbeam"
         default: "matic"
       
       version:
@@ -77,6 +81,38 @@ jobs:
           GRAPH_DEPLOY_KEY_ARBI: ${{ secrets.GRAPH_DEPLOY_KEY_ARBI }}
         run: |
           graph auth $GRAPH_DEPLOY_KEY_ARBI
+
+      # Set up authentication for Avalanche
+      - name: "Authenticate with The Graph (Avalanche)"
+        if: inputs.chain == 'avalanche'
+        env:
+          GRAPH_DEPLOY_KEY_AVALANCHE: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_AVALANCHE
+
+      # Set up authentication for Manta
+      - name: "Authenticate with The Graph (Manta)"
+        if: inputs.chain == 'manta'
+        env:
+          GRAPH_DEPLOY_KEY_MANTA: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_MANTA
+
+      # Set up authentication for Telos
+      - name: "Authenticate with The Graph (Telos)"
+        if: inputs.chain == 'telos'
+        env:
+          GRAPH_DEPLOY_KEY_TELOS: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_TELOS
+
+      # Set up authentication for Moonbeam
+      - name: "Authenticate with The Graph (Moonbeam)"
+        if: inputs.chain == 'moonbeam'
+        env:
+          GRAPH_DEPLOY_KEY_MOONBEAM: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_MOONBEAM
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
