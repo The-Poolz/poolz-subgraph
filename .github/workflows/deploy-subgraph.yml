@@ -115,13 +115,13 @@ jobs:
         run: |
           graph auth $GRAPH_DEPLOY_KEY_MOONBEAM
 
-      # Set up authentication for Mainnet
-      - name: "Authenticate with The Graph (Mainnet)"
-        if: inputs.chain == 'mainnet'
+      # Set up authentication for ETH
+      - name: "Authenticate with The Graph (ETH)"
+        if: inputs.chain == 'eth'
         env:
-          GRAPH_DEPLOY_KEY_MAINNET: ${{ secrets.GRAPH_AUTH_TOKEN }}
+          GRAPH_DEPLOY_KEY_ETH: ${{ secrets.GRAPH_AUTH_TOKEN }}
         run: |
-          graph auth $GRAPH_DEPLOY_KEY_MAINNET
+          graph auth $GRAPH_DEPLOY_KEY_ETH
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"
