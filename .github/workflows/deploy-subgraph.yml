@@ -17,6 +17,7 @@ on:
           - "manta"
           - "telos"
           - "moonbeam"
+          - "eth"
         default: "matic"
       
       version:
@@ -113,6 +114,14 @@ jobs:
           GRAPH_DEPLOY_KEY_MOONBEAM: ${{ secrets.GRAPH_AUTH_TOKEN }}
         run: |
           graph auth $GRAPH_DEPLOY_KEY_MOONBEAM
+
+      # Set up authentication for ETH
+      - name: "Authenticate with The Graph (ETH)"
+        if: inputs.chain == 'eth'
+        env:
+          GRAPH_DEPLOY_KEY_ETH: ${{ secrets.GRAPH_AUTH_TOKEN }}
+        run: |
+          graph auth $GRAPH_DEPLOY_KEY_ETH
 
       # Generate types and build for the specified chain
       - name: "Generate types and build subgraph"

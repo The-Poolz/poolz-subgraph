@@ -355,5 +355,51 @@
       "address": "0x9c8F78E0aeAB8190c9d1DF7BEd0B26c1EDcB8DE6",
       "startBlock": 7430173
     }
+  },
+  "mainnet": {
+    "VaultManager": {
+      "address": "0x9ff1db30c66cd9d3311b4b22da49791610922b13",
+      "startBlock": 20089515
+    },
+    "LockDealNFT": {
+      "address": "0x5e0bB1fF9003ac3586f039D482d2974A6D7ED781",
+      "startBlock": 20118782
+    },
+    "DealProvider": {
+      "address": "0xf8449c81E2d132e429caa1cb744E1ba7235C20DE",
+      "startBlock": 22276250
+    },
+    "LockDealProvider": {
+      "address": "0x83d9a44395b6a4Aa3a907a445CB049C50fF5b962",
+      "startBlock": 22276254
+    },
+    "TimedDealProvider": {
+      "address": "0x313a8Dd9d9399fc625Ec946b328F45020d15A699",
+      "startBlock": 22276259
+    },
+    "DispenserProvider": {
+      "address": "0xf5e1D15FdCbB8efC617632dCBAcBC74b96a3ccA7",
+      "startBlock": 22276265
+    },
+    "CollateralProvider": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 22276265
+    },
+    "RefundProvider": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 22276265
+    },
+    "OldDealProvider": {
+      "address": "0xA3F5abB71a5665741D3dA685a4e8899e9d4E2532",
+      "startBlock": 20118815
+    },
+    "OldLockDealProvider": {
+      "address": "0x6c6f6D7Ec412EfEF553F5d2f273A72F872A67CeB",
+      "startBlock": 20118820
+    },
+    "OldTimedDealProvider": {
+      "address": "0xe18542a10b8a2B48BC8F1A18fA77613d2a1b2D67",
+      "startBlock": 20118827
+    }
   }
 }
