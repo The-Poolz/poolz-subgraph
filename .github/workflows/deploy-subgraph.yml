@@ -59,14 +59,14 @@ jobs:
       # Deploy to The Graph Studio
       - name: "Deploy subgraph"
         run: |
-          echo "Deploying poolzfinancebsc version ${{ inputs.version }} to BSC"
-          graph deploy poolzfinancebsc --version-label ${{ inputs.version }}
+          echo "Deploying poolzfinance-bsc version ${{ inputs.version }} to BSC"
+          graph deploy poolzfinance-bsc --version-label ${{ inputs.version }}
         
       # Output deployment information
       - name: "Deployment Summary"
         run: |
           echo "🚀 Deployment completed successfully!"
-          echo "📊 Subgraph: poolzfinancebsc"
+          echo "📊 Subgraph: poolzfinance-bsc"
           echo "🔗 Chain: BSC"
           echo "🏷️  Version: ${{ inputs.version }}"
-          echo "🌐 Studio URL: https://thegraph.com/studio/subgraph/poolzfinancebsc"
+          echo "🌐 Studio URL: https://thegraph.com/studio/subgraph/poolzfinance-bsc"

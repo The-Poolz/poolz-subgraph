@@ -57,7 +57,8 @@ dataSources:
           handler: handleUpdatedMaxDelay
         - event: UpdatedMinDelays(indexed address,uint256[],uint256[],uint256[],uint256[])
           handler: handleUpdatedMinDelays
-        - event: VaultValueChanged(indexed address,indexed address,uint256,uint256,uint256,uint256)
+        - event: VaultValueChanged(indexed address,indexed
+            address,uint256,uint256,uint256,uint256)
           handler: handleVaultValueChanged
       file: ./src/delay-vault.ts
   - kind: ethereum
@@ -163,7 +164,8 @@ dataSources:
           handler: handleMetadataUpdate
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: PoolSplit(uint256,indexed address,uint256,indexed address,uint256,uint256)
+        - event: PoolSplit(uint256,indexed address,uint256,indexed
+            address,uint256,uint256)
           handler: handlePoolSplit
         - event: TokenWithdrawn(uint256,indexed address,uint256,uint256)
           handler: handleTokenWithdrawn

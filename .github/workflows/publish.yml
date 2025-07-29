@@ -44,7 +44,7 @@ jobs:
           yarn codegen
           yarn build
 
-        # (8) 7) Deploy to "poolzfinancebsc" with version = release tag
+        # (8) 7) Deploy to "poolzfinance-bsc" with version = release tag
       - name: "Deploy subgraph to Hosted Service"
         # Pass the release's tag_name as VERSION
         env:
@@ -52,4 +52,4 @@ jobs:
         run: |
           echo "Deploying version: $VERSION"
           # The format is <SUBGRAPH_NAME>@<VERSION_LABEL>
-          graph deploy poolzfinancebsc --version-label $VERSION
+          graph deploy poolzfinance-bsc --version-label $VERSION

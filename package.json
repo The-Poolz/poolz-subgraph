@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build --network bsc",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolzfinancebsc --network bsc",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolzfinance-bsc --network bsc",
     "build:bsc-testnet": "graph build --network chapel",
     "deploy:bsc-testnet": "graph deploy --node https://api.studio.thegraph.com/deploy/ poolz-testnet-subgraph --network chapel",
     "create-local": "graph create --node http://localhost:8020/ poolz-subgraph",
